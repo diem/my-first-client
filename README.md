@@ -2,10 +2,10 @@
 This repo includes example code for the My First Client tutorial.
 
 ## Setup
-<code>
+```
   git clone https://github.com/libra/my-first-client.git
   make
-</code>
+```
 
 ### Install language dependencies.
 
