@@ -1,3 +1,2 @@
-# New Open Source Project
-
-A new open source project from the Libra Association.
+# My First Client Tutorial sample code
+This repo includes example code for the My First Client tutorial.
