@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 
 import static org.libra.Testnet.FAUCET_SERVER_URL;
 
-public class Minter {
+public class Mint {
     public static void mint(AuthKey authKey, String amount, String currencyCode) {
         URI build;
 

@@ -9,7 +9,7 @@ import org.libra.utils.CurrencyCode;
 
 import static org.libra.Testnet.CHAIN_ID;
 
-public class PeerToPeerTransactionSubmit {
+public class SubmitPeerToPeerTransaction {
     public static void submitPeerToPeerTransaction(LibraClient client, PrivateKey privateKey, AuthKey authKey, JsonRpc.Account account, AuthKey receiverAuthKey) {
         //Create script
         TransactionPayload script = generateScript(receiverAuthKey);
