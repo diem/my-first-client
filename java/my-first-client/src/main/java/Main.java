@@ -17,7 +17,7 @@ public class Main {
      * 5. Transfer money between accounts (peer to peer transaction)
      * 6. Follow transaction status
      */
-    public static void howToWorkWithTestnet() {
+    public static void main(String args[]) {
         //Create new account (mint to new address)
         PrivateKey privateKey = GenerateKeys.generatePrivateKey();
         AuthKey authKey = GenerateKeys.generateAuthKey(privateKey);
