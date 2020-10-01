@@ -7,42 +7,50 @@ import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.jsonrpctypes.JsonRpc.Event;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GetEventsExample {
-    private static Map<String, List<Event>> map = new HashMap<>();
+    private static final Map<String, List<Event>> eventsPerAccount = new ConcurrentHashMap<>();
+    private static final Map<String, List<Event>> newEventsPerAccount = new ConcurrentHashMap<>();
 
     public static List<Event> getEvents(Account account) {
-        //Connect to testnet
-        LibraClient client = new LibraJsonRpcClient(Testnet.NET_URL, Testnet.CHAIN_ID);
         //Retrieve ReceivedEventsKey from account
         String receivedEventsKey = account.getReceivedEventsKey();
 
-        if (!map.containsKey(receivedEventsKey)) {
-            map.put(receivedEventsKey, new ArrayList<>());
+        if (!eventsPerAccount.containsKey(receivedEventsKey)) {
+            eventsPerAccount.put(receivedEventsKey, new ArrayList<>());
+            newEventsPerAccount.put(receivedEventsKey, new ArrayList<>());
         }
 
-        List<Event> result = new ArrayList<>();
+        List<Event> events = collectNewEvents(receivedEventsKey);
+
+        newEventsPerAccount.put(receivedEventsKey, new ArrayList<>());
+
+        return events;
+    }
+
+    private static List<Event> collectNewEvents(String eventsKey) {
+        //Connect to testnet
+        LibraClient client = new LibraJsonRpcClient(Testnet.NET_URL, Testnet.CHAIN_ID);
 
         try {
-            List<Event> events = client.getEvents(receivedEventsKey, 0, 10);
+            List<Event> events = client.getEvents(eventsKey, 0, 10);
 
             events.forEach(event -> {
-                if (!map.get(receivedEventsKey).contains(event)) {
-                    map.get(receivedEventsKey).add(event);
-
-                    result.add(event);
+                if (!eventsPerAccount.get(eventsKey).contains(event)) {
+                    eventsPerAccount.get(eventsKey).add(event);
+                    newEventsPerAccount.get(eventsKey).add(event);
                 }
             });
-
-            System.out.println("~ number of events: " + events.size());
-            System.out.println("~ number of new events: " + result.size());
         } catch (LibraException e) {
             throw new RuntimeException(e);
         }
 
-        return result;
+        System.out.println("~ number of events: " + eventsPerAccount.get(eventsKey).size());
+        List<Event> events = newEventsPerAccount.get(eventsKey);
+        System.out.println("~ number of new events: " + events.size());
+        return events;
     }
 }
