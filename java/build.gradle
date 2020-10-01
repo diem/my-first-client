@@ -6,8 +6,8 @@ group 'org.example'
 version '1.0-SNAPSHOT'
 
 sourceSets {
-    main.java.srcDirs = ['my-first-client/src/main/java']
-    test.java.srcDirs=['my-first-client/src/test/java']
+    main.java.srcDirs = ['src/main/java']
+    test.java.srcDirs=['src/test/java']
 //    main.java.sr
 //    main.resources.srcDirs = ['java/src/resources']
 }
