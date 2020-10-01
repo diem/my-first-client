@@ -10,16 +10,10 @@ public class GetAccountInfoExample {
         //Connect to testnet
         LibraClient client = new LibraJsonRpcClient(Testnet.NET_URL, Testnet.CHAIN_ID);
 
-        Account account;
-
         try {
-            account = client.getAccount(accountAddress);
-
-            System.out.println(account);
+            return client.getAccount(accountAddress);
         } catch (LibraException e) {
             throw new RuntimeException(e);
         }
-
-        return account;
     }
 }
