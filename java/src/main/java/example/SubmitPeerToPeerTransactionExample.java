@@ -22,27 +22,27 @@ public class SubmitPeerToPeerTransactionExample {
         //Sign transaction
         SignedTransaction st = Signer.sign(privateKey, rawTransaction);
         //Submit transaction
-        submitTransaction(client, st);
+        try {
+            submitTransaction(client, st);
+        } catch (LibraException e) {
+            System.out.println("Failed to submit transaction following " + e);
+        }
         //Wait for the transaction to complete
-        waitForTransaction(client, st);
-    }
-
-    private static void waitForTransaction(LibraClient client, SignedTransaction st) {
         try {
-            Transaction transaction = client.waitForTransaction(st, 100000);
-
-            System.out.println(transaction);
+            waitForTransaction(client, st);
         } catch (LibraException e) {
-            throw new RuntimeException(e);
+            System.out.println("Faild while waiting to transaction following " + e);
         }
     }
 
-    private static void submitTransaction(LibraClient client, SignedTransaction st) {
-        try {
-            client.submit(st);
-        } catch (LibraException e) {
-            throw new RuntimeException(e);
-        }
+    private static void waitForTransaction(LibraClient client, SignedTransaction st) throws LibraException {
+        Transaction transaction = client.waitForTransaction(st, 100000);
+
+        System.out.println(transaction);
+    }
+
+    private static void submitTransaction(LibraClient client, SignedTransaction st) throws LibraException {
+        client.submit(st);
     }
 
     private static RawTransaction generateRawTransaction(AuthKey authKey, Account account, TransactionPayload script) {
