@@ -1,13 +1,13 @@
+import example.GenerateKeysExample;
+import example.GetAccountInfoExample;
+import example.MintExample;
+import example.SubmitPeerToPeerTransactionExample;
 import org.libra.AuthKey;
 import org.libra.PrivateKey;
 import org.libra.jsonrpctypes.JsonRpc.Account;
-import org.libra.types.ChainId;
 import org.libra.utils.CurrencyCode;
 
 public class Main {
-    public static String NET_URL = "https://testnet.libra.org/v1";
-    public static ChainId CHAIN_ID = new ChainId((byte) 2);
-
     /**
      * This code demonstrates basic operations to work with the LibraClient.
      * 1. Connect to testnet
@@ -19,27 +19,27 @@ public class Main {
      */
     public static void main(String args[]) {
         //Create new account (mint to new address)
-        PrivateKey privateKey = GenerateKeys.generatePrivateKey();
-        AuthKey authKey = GenerateKeys.generateAuthKey(privateKey);
+        PrivateKey privateKey = GenerateKeysExample.generatePrivateKey();
+        AuthKey authKey = GenerateKeysExample.generateAuthKey(privateKey);
 
-        Mint.mint(authKey, "1340000000", CurrencyCode.LBR);
+        MintExample.mint(authKey, "1340000000", CurrencyCode.LBR);
 
-        String accountAddress = GenerateKeys.getGeneratedAddress(authKey);
+        String accountAddress = GenerateKeysExample.getGeneratedAddress(authKey);
 
         //Get account information
-        Account account = GetAccountInfo.getAccountInfo(accountAddress);
+        Account account = GetAccountInfoExample.getAccountInfo(accountAddress);
 
         //Add money to account
-        Mint.mint(authKey, "270000000", CurrencyCode.LBR);
+        MintExample.mint(authKey, "270000000", CurrencyCode.LBR);
 
         //Peer 2 peer transaction
         //Create second account
-        PrivateKey receiverPrivateKey = GenerateKeys.generatePrivateKey();
-        AuthKey receiverAuthKey = GenerateKeys.generateAuthKey(receiverPrivateKey);
+        PrivateKey receiverPrivateKey = GenerateKeysExample.generatePrivateKey();
+        AuthKey receiverAuthKey = GenerateKeysExample.generateAuthKey(receiverPrivateKey);
 
-        Mint.mint(receiverAuthKey, "2560000000", CurrencyCode.LBR);
+        MintExample.mint(receiverAuthKey, "2560000000", CurrencyCode.LBR);
 
         //Only to display receiver address
-        SubmitPeerToPeerTransaction.submitPeerToPeerTransaction(privateKey, authKey, account, receiverAuthKey);
+        SubmitPeerToPeerTransactionExample.submitPeerToPeerTransaction(privateKey, authKey, account, receiverAuthKey);
     }
 }

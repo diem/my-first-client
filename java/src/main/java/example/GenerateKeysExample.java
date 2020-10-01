@@ -1,3 +1,4 @@
+package example;
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
 import org.libra.AuthKey;
 import org.libra.Ed25519PrivateKey;
@@ -5,7 +6,7 @@ import org.libra.PrivateKey;
 
 import java.security.SecureRandom;
 
-public class GenerateKeys {
+public class GenerateKeysExample {
     public static PrivateKey generatePrivateKey() {
         SecureRandom random = new SecureRandom();
         Ed25519PrivateKeyParameters privateKeyParams = new Ed25519PrivateKeyParameters(random);

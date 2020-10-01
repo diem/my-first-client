@@ -1,3 +1,5 @@
+package example;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
@@ -12,7 +14,7 @@ import java.net.URISyntaxException;
 
 import static org.libra.Testnet.FAUCET_SERVER_URL;
 
-public class Mint {
+public class MintExample {
     public static void mint(AuthKey authKey, String amount, String currencyCode) {
         URI build;
 
