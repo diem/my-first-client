@@ -28,13 +28,14 @@ public class Main {
         Account account = GetAccountInfoExample.getAccountInfo(accountAddress);
 
         System.out.println("~ Get new events 1");
-        GetEventsExample.getEvents(account);
+        GetEventsExample.start(account);
+        GetEventsExample.get(account);
 
         System.out.println("~4 Add money to account");
         MintExample.mint(authKey, "270000000", CurrencyCode.LBR);
 
         System.out.println("~ Get new events 2");
-        GetEventsExample.getEvents(account);
+        GetEventsExample.get(account);
 
         System.out.println("~5 Create receiver account");
         PrivateKey receiverPrivateKey = GenerateKeysExample.generatePrivateKey();
@@ -43,12 +44,14 @@ public class Main {
         MintExample.mint(receiverAuthKey, "2560000000", CurrencyCode.LBR);
 
         System.out.println("~ Get new events 3");
-        GetEventsExample.getEvents(account);
+        GetEventsExample.get(account);
 
         System.out.println("~6 Peer 2 peer transaction");
         SubmitPeerToPeerTransactionExample.submitPeerToPeerTransaction(privateKey, authKey, account, receiverAuthKey);
 
         System.out.println("~ Get new events 4");
-        GetEventsExample.getEvents(account);
+        GetEventsExample.get(account);
+
+        GetEventsExample.stop();
     }
 }
