@@ -1,9 +1,8 @@
 import org.junit.Test;
 
-public class ExamplesTest {
-
+public class MainTest {
     @Test
     public void examplesTest() {
-        Examples.howToWorkWithTestnet();
+        Main.howToWorkWithTestnet();
     }
 }
