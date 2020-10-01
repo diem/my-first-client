@@ -16,15 +16,14 @@ public class GenerateKeysExample {
 
     public static AuthKey generateAuthKey(PrivateKey privateKey) {
         AuthKey authKey = AuthKey.ed24419(privateKey.publicKey());
-        getGeneratedAddress(authKey);
+        String accountAddress = extractAccountAddress(authKey);
+
+        System.out.println("~ Generated address: " + accountAddress);
 
         return authKey;
     }
 
-    public static String getGeneratedAddress(AuthKey authKey) {
-        String accountAddress = authKey.hex().toLowerCase().substring(32, authKey.hex().length());
-        System.out.println("Generated address: " + accountAddress);
-
-        return accountAddress;
+    public static String extractAccountAddress(AuthKey authKey) {
+        return authKey.hex().toLowerCase().substring(32, authKey.hex().length());
     }
 }
