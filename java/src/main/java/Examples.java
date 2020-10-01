@@ -27,24 +27,29 @@ import static org.libra.Testnet.FAUCET_SERVER_URL;
 public class Examples {
     public static String NET_URL = "https://testnet.libra.org/v1";
     public static ChainId CHAIN_ID = new ChainId((byte) 2);
-    private static LibraClient client;
 
+    /**
+     * This code demonstrates basic operations to work with the LibraClient.
+     * 1. Connect to testnet
+     * 2. Create account
+     * 3. Get account information
+     * 4. Add money to existing account
+     * 5. Transfer money between accounts (peer to peer transaction)
+     * 6. Follow transaction status
+     */
     public static void howToWorkWithTestnet() {
-        //connect to testnet
-        client = new LibraJsonRpcClient(NET_URL, CHAIN_ID);
+        //Connect to testnet
+        LibraClient client = new LibraJsonRpcClient(NET_URL, CHAIN_ID);
 
-        //create new account (mint to new address)
-        SecureRandom random = new SecureRandom();
-        Ed25519PrivateKeyParameters privateKeyParams = new Ed25519PrivateKeyParameters(random);
-        PrivateKey privateKey = new Ed25519PrivateKey(privateKeyParams);
+        //Create new account (mint to new address)
+        PrivateKey privateKey = generatePrivateKey();
         AuthKey authKey = AuthKey.ed24419(privateKey.publicKey());
 
         mint(authKey, "1340000000", CurrencyCode.LBR);
 
-        String accountAddress = authKey.hex().toLowerCase().substring(32, authKey.hex().length());
-        System.out.println("address: " + accountAddress);
+        String accountAddress = extractAddress(authKey);
 
-        //get account info
+        //Get account information
         Account account;
         try {
             account = client.getAccount(accountAddress);
@@ -54,21 +59,19 @@ public class Examples {
             throw new RuntimeException(e);
         }
 
-        //add money to account
+        //Add money to account
         mint(authKey, "270000000", CurrencyCode.LBR);
 
-        //peer 2 peer transaction
-        //create receiver account
-        SecureRandom receiverRandom = new SecureRandom();
-        Ed25519PrivateKeyParameters receiverPrivateKeyParams = new Ed25519PrivateKeyParameters(receiverRandom);
-        PrivateKey receiverPrivateKey = new Ed25519PrivateKey(receiverPrivateKeyParams);
+        //Peer 2 peer transaction
+        //Create second account
+        PrivateKey receiverPrivateKey = generatePrivateKey();
         AuthKey receiverAuthKey = AuthKey.ed24419(receiverPrivateKey.publicKey());
 
         mint(receiverAuthKey, "2560000000", CurrencyCode.LBR);
 
-        String receiverAccountAddress = receiverAuthKey.hex().toLowerCase().substring(32, receiverAuthKey.hex().length());
-        System.out.println("receiver address: " + receiverAccountAddress);
-        //create script
+        //Only to display receiver address
+        extractAddress(receiverAuthKey);
+        //Create script
         TransactionPayload script = new TransactionPayload.Script(
                 Helpers.encode_peer_to_peer_with_metadata_script(
                         CurrencyCode.typeTag(CurrencyCode.LBR),
@@ -76,24 +79,23 @@ public class Examples {
                         1120000000L,
                         new Bytes(new byte[0]),
                         new Bytes(new byte[0])));
-        //create transaction
+        //Create transaction
         RawTransaction rawTransaction = new RawTransaction(
                 authKey.accountAddress(),
                 account.getSequenceNumber(), script,
                 1000000L, 0L,
                 CurrencyCode.LBR, 100000000000L,
                 CHAIN_ID);
-        //sign transaction
+        //Sign transaction
         SignedTransaction st = Signer.sign(privateKey,
                 rawTransaction);
-        //submit transaction
+        //Submit transaction
         try {
             client.submit(st);
         } catch (LibraException e) {
             throw new RuntimeException(e);
         }
-
-        //wait for transaction to be finish
+        //Wait for the transaction to complete
         try {
             Transaction transaction = client.waitForTransaction(st, 100000);
 
@@ -101,6 +103,20 @@ public class Examples {
         } catch (LibraException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static PrivateKey generatePrivateKey() {
+        SecureRandom random = new SecureRandom();
+        Ed25519PrivateKeyParameters privateKeyParams = new Ed25519PrivateKeyParameters(random);
+
+        return new Ed25519PrivateKey(privateKeyParams);
+    }
+
+    private static String extractAddress(AuthKey authKey) {
+        String accountAddress = authKey.hex().toLowerCase().substring(32, authKey.hex().length());
+        System.out.println("address: " + accountAddress);
+
+        return accountAddress;
     }
 
     private static void mint(AuthKey authKey, String amount, String currencyCode) {
