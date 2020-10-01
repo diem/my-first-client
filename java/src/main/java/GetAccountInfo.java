@@ -1,9 +1,13 @@
 import org.libra.LibraClient;
 import org.libra.LibraException;
+import org.libra.jsonrpc.LibraJsonRpcClient;
 import org.libra.jsonrpctypes.JsonRpc.Account;
 
 public class GetAccountInfo {
-    public static Account getAccountInfo(LibraClient client, String accountAddress) {
+    public static Account getAccountInfo(String accountAddress) {
+        //Connect to testnet
+        LibraClient client = new LibraJsonRpcClient(Main.NET_URL, Main.CHAIN_ID);
+
         Account account;
 
         try {

@@ -1,5 +1,6 @@
 import com.novi.serde.Bytes;
 import org.libra.*;
+import org.libra.jsonrpc.LibraJsonRpcClient;
 import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.jsonrpctypes.JsonRpc.Transaction;
 import org.libra.stdlib.Helpers;
@@ -8,10 +9,10 @@ import org.libra.types.SignedTransaction;
 import org.libra.types.TransactionPayload;
 import org.libra.utils.CurrencyCode;
 
-import static org.libra.Testnet.CHAIN_ID;
-
 public class SubmitPeerToPeerTransaction {
-    public static void submitPeerToPeerTransaction(LibraClient client, PrivateKey privateKey, AuthKey authKey, Account account, AuthKey receiverAuthKey) {
+    public static void submitPeerToPeerTransaction(PrivateKey privateKey, AuthKey authKey, Account account, AuthKey receiverAuthKey) {
+        //Connect to testnet
+        LibraClient client = new LibraJsonRpcClient(Main.NET_URL, Main.CHAIN_ID);
         //Create script
         TransactionPayload script = generateScript(receiverAuthKey);
         //Create transaction
@@ -51,7 +52,7 @@ public class SubmitPeerToPeerTransaction {
                 0L,
                 CurrencyCode.LBR,
                 100000000000L,
-                CHAIN_ID);
+                Main.CHAIN_ID);
     }
 
     private static TransactionPayload generateScript(AuthKey receiverAuthKey) {

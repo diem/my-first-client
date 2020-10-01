@@ -1,5 +1,5 @@
-import org.libra.*;
-import org.libra.jsonrpc.LibraJsonRpcClient;
+import org.libra.AuthKey;
+import org.libra.PrivateKey;
 import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.types.ChainId;
 import org.libra.utils.CurrencyCode;
@@ -18,9 +18,6 @@ public class Main {
      * 6. Follow transaction status
      */
     public static void howToWorkWithTestnet() {
-        //Connect to testnet
-        LibraClient client = new LibraJsonRpcClient(NET_URL, CHAIN_ID);
-
         //Create new account (mint to new address)
         PrivateKey privateKey = GenerateKeys.generatePrivateKey();
         AuthKey authKey = GenerateKeys.generateAuthKey(privateKey);
@@ -30,7 +27,7 @@ public class Main {
         String accountAddress = GenerateKeys.getGeneratedAddress(authKey);
 
         //Get account information
-        Account account = GetAccountInfo.getAccountInfo(client, accountAddress);
+        Account account = GetAccountInfo.getAccountInfo(accountAddress);
 
         //Add money to account
         Mint.mint(authKey, "270000000", CurrencyCode.LBR);
@@ -43,6 +40,6 @@ public class Main {
         Mint.mint(receiverAuthKey, "2560000000", CurrencyCode.LBR);
 
         //Only to display receiver address
-        SubmitPeerToPeerTransaction.submitPeerToPeerTransaction(client, privateKey, authKey, account, receiverAuthKey);
+        SubmitPeerToPeerTransaction.submitPeerToPeerTransaction(privateKey, authKey, account, receiverAuthKey);
     }
 }
