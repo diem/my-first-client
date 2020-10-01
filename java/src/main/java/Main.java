@@ -23,7 +23,7 @@ public class Main {
      * 11. Get new events (3)
      * 12. Close listener
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         System.out.println("~1 Generate Keys");
         PrivateKey privateKey = GenerateKeysExample.generatePrivateKey();
         AuthKey authKey = GenerateKeysExample.generateAuthKey(privateKey);
