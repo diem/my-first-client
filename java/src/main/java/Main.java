@@ -11,7 +11,7 @@ public class Main {
     /**
      * This code demonstrates basic flow for working with the LibraClient.
      * 1. Generate keys
-     * 2. Create account (by mint for new account base on the keys we generated)
+     * 2. Create account - by minting
      * 3. Get account information
      * 4. Start events listener
      * 5. Get new events (1)
