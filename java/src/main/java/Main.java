@@ -24,47 +24,47 @@ public class Main {
      * 12. Close listener
      */
     public static void main(String[] args) {
-        System.out.println("~1 Generate Keys");
+        System.out.println("#1 Generate Keys");
         PrivateKey privateKey = GenerateKeysExample.generatePrivateKey();
         AuthKey authKey = GenerateKeysExample.generateAuthKey(privateKey);
 
-        System.out.println("~2 Create account");
+        System.out.println("#2 Create account");
         MintExample.mint(authKey, "1340000000", CurrencyCode.LBR);
 
         String accountAddress = GenerateKeysExample.extractAccountAddress(authKey);
 
-        System.out.println("~3 Get account information");
+        System.out.println("#3 Get account information");
         Account account = GetAccountInfoExample.getAccountInfo(accountAddress);
 
-        System.out.println("~4 Start event listener");
+        System.out.println("#4 Start event listener");
         GetEventsExample.start(account);
 
-        System.out.println("~5 Get new events (1)");
+        System.out.println("#5 Get new events (1)");
         List<Event> newEvents = GetEventsExample.get(account);
         System.out.println(newEvents.size() + " new events was found");
 
-        System.out.println("~6 Add money to account");
+        System.out.println("#6 Add money to account");
         MintExample.mint(authKey, "270000000", CurrencyCode.LBR);
 
-        System.out.println("~7 Get new events (2)");
+        System.out.println("#7 Get new events (2)");
         newEvents = GetEventsExample.get(account);
         System.out.println(newEvents.size() + " new events was found");
 
-        System.out.println("~8 Generate Keys");
+        System.out.println("#8 Generate Keys");
         PrivateKey receiverPrivateKey = GenerateKeysExample.generatePrivateKey();
         AuthKey receiverAuthKey = GenerateKeysExample.generateAuthKey(receiverPrivateKey);
 
-        System.out.println("~9 Create second account");
+        System.out.println("#9 Create second account");
         MintExample.mint(receiverAuthKey, "2560000000", CurrencyCode.LBR);
 
-        System.out.println("~10 Peer 2 peer transaction");
+        System.out.println("#10 Peer 2 peer transaction");
         SubmitPeerToPeerTransactionExample.submitPeerToPeerTransaction(privateKey, authKey, account, receiverAuthKey);
 
-        System.out.println("~11 Get new events (3)");
+        System.out.println("#11 Get new events (3)");
         newEvents = GetEventsExample.get(account);
         System.out.println(newEvents.size() + " new events was found");
 
-        System.out.println("~12 Stop event listener");
+        System.out.println("#12 Stop event listener");
         GetEventsExample.stop();
     }
 }
