@@ -3,37 +3,37 @@ package example;
 import org.libra.LibraClient;
 import org.libra.LibraException;
 import org.libra.jsonrpc.LibraJsonRpcClient;
-import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.jsonrpctypes.JsonRpc.Event;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.PriorityBlockingQueue;
 
 public class GetEventsExample {
-    private static final Map<String, List<Event>> eventsPerAccount = new ConcurrentHashMap<>();
-    private static final Map<String, List<Event>> newEventsPerAccount = new ConcurrentHashMap<>();
+    private static final Map<String, Queue<EventExample>> eventsPerAccount = new ConcurrentHashMap<>();
+    private static final Map<String, Queue<EventExample>> newEventsPerAccount = new ConcurrentHashMap<>();
     private static final Timer timer = new Timer();
 
-    public static void start(Account account) {
-        String receivedEventsKey = account.getReceivedEventsKey();
+    public static void start(String eventsKey) {
+        System.out.println("receivedEventsKey: " + eventsKey);
 
-        if (!eventsPerAccount.containsKey(receivedEventsKey)) {
-            eventsPerAccount.put(receivedEventsKey, new ArrayList<>());
-            newEventsPerAccount.put(receivedEventsKey, new ArrayList<>());
+        if (!eventsPerAccount.containsKey(eventsKey)) {
+            eventsPerAccount.put(eventsKey, new PriorityBlockingQueue<>());
+            newEventsPerAccount.put(eventsKey, new PriorityBlockingQueue<>());
         }
 
-        timer.scheduleAtFixedRate(new GetNewEventsFromClientExample(account.getReceivedEventsKey()), 0L, 1000L);
+        timer.scheduleAtFixedRate(new GetNewEventsFromClientExample(eventsKey), 0, 1000);
     }
 
-    public static List<Event> get(Account account) {
-        List<Event> allEvents = eventsPerAccount.get(account.getReceivedEventsKey());
+    public static Queue<EventExample> get(String eventsKey) {
+        Queue<EventExample> allEvents = eventsPerAccount.get(eventsKey);
         System.out.println("~ number of events: " + allEvents.size());
 
-        List<Event> newEvents = newEventsPerAccount.get(account.getReceivedEventsKey());
+        Queue<EventExample> newEvents = newEventsPerAccount.get(eventsKey);
         System.out.println("~ number of new events: " + newEvents.size());
 
-        //"reset" new events for current account
-        newEventsPerAccount.put(account.getReceivedEventsKey(), new ArrayList<>());
+        //"reset" new events for current event key
+        newEventsPerAccount.put(eventsKey, new PriorityBlockingQueue<>());
 
         return newEvents;
     }
@@ -52,10 +52,17 @@ public class GetEventsExample {
             try {
                 List<Event> events = client.getEvents(eventsKey, 0, 10);
 
+                List<EventExample> eventExamples = new ArrayList<>();
+
                 events.forEach(event -> {
-                    if (!eventsPerAccount.get(eventsKey).contains(event)) {
-                        eventsPerAccount.get(eventsKey).add(event);
-                        newEventsPerAccount.get(eventsKey).add(event);
+                    EventExample eventExample = new EventExample(event);
+                    eventExamples.add(eventExample);
+                });
+
+                eventExamples.forEach(eventExample -> {
+                    if (!eventsPerAccount.get(eventsKey).contains(eventExample)) {
+                        eventsPerAccount.get(eventsKey).add(eventExample);
+                        newEventsPerAccount.get(eventsKey).add(eventExample);
                     }
                 });
             } catch (LibraException e) {
@@ -66,5 +73,24 @@ public class GetEventsExample {
 
     public static void stop() {
         timer.cancel();
+    }
+
+    public static class EventExample implements Comparable<EventExample> {
+        private final Event event;
+
+        public EventExample(Event event) {
+            this.event = event;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return this.event.equals(((EventExample) o).event);
+        }
+
+        @Override
+        public int compareTo(EventExample event) {
+            return Long.compare(this.event.getSequenceNumber(), event.event.getSequenceNumber());
+
+        }
     }
 }
