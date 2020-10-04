@@ -1,8 +1,11 @@
 package example;
+
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
 import org.libra.AuthKey;
 import org.libra.Ed25519PrivateKey;
 import org.libra.PrivateKey;
+import org.libra.types.AccountAddress;
+import org.libra.utils.Hex;
 
 import java.security.SecureRandom;
 
@@ -24,6 +27,7 @@ public class GenerateKeysExample {
     }
 
     public static String extractAccountAddress(AuthKey authKey) {
-        return authKey.hex().toLowerCase().substring(32, authKey.hex().length());
+        AccountAddress accountAddress = authKey.accountAddress();
+        return Hex.encode(accountAddress.value);
     }
 }
