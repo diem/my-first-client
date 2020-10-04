@@ -25,13 +25,13 @@ public class SubmitPeerToPeerTransactionExample {
         try {
             submitTransaction(client, st);
         } catch (LibraException e) {
-            System.out.println("Failed to submit transaction following " + e);
+            throw new RuntimeException("Failed to submit transaction", e);
         }
         //Wait for the transaction to complete
         try {
             waitForTransaction(client, st);
         } catch (LibraException e) {
-            System.out.println("Faild while waiting to transaction following " + e);
+            throw new RuntimeException("Failed while waiting to transaction ", e);
         }
     }
 
@@ -62,7 +62,7 @@ public class SubmitPeerToPeerTransactionExample {
                 Helpers.encode_peer_to_peer_with_metadata_script(
                         CurrencyCode.typeTag(CurrencyCode.LBR),
                         receiverAuthKey.accountAddress(),
-                        1120000000L,
+                        130000000L,
                         new Bytes(new byte[0]),
                         new Bytes(new byte[0])));
     }
