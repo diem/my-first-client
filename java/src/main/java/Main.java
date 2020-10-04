@@ -36,18 +36,19 @@ public class Main {
         System.out.println("#3 Get account information");
         Account account = GetAccountInfoExample.getAccountInfo(accountAddress);
 
-        System.out.println("#4 Start event listener");
-        GetEventsExample.start(account);
+        String receivedEventsKey = account.getReceivedEventsKey();
+        System.out.println("#4 Start event listener - events key: " + receivedEventsKey);
+        GetEventsExample.start(receivedEventsKey);
 
         System.out.println("#5 Get new events (1)");
-        List<Event> newEvents = GetEventsExample.get(account);
+        List<Event> newEvents = GetEventsExample.get(receivedEventsKey);
         System.out.println(newEvents.size() + " new events was found");
 
         System.out.println("#6 Add money to account");
         MintExample.mint(authKey, "270000000", CurrencyCode.LBR);
 
         System.out.println("#7 Get new events (2)");
-        newEvents = GetEventsExample.get(account);
+        newEvents = GetEventsExample.get(receivedEventsKey);
         System.out.println(newEvents.size() + " new events was found");
 
         System.out.println("#8 Generate Keys");
@@ -61,7 +62,7 @@ public class Main {
         SubmitPeerToPeerTransactionExample.submitPeerToPeerTransaction(privateKey, authKey, account, receiverAuthKey);
 
         System.out.println("#11 Get new events (3)");
-        newEvents = GetEventsExample.get(account);
+        newEvents = GetEventsExample.get(receivedEventsKey);
         System.out.println(newEvents.size() + " new events was found");
 
         System.out.println("#12 Stop event listener");

@@ -3,7 +3,6 @@ package example;
 import org.libra.LibraClient;
 import org.libra.LibraException;
 import org.libra.jsonrpc.LibraJsonRpcClient;
-import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.jsonrpctypes.JsonRpc.Event;
 
 import java.util.*;
@@ -14,26 +13,24 @@ public class GetEventsExample {
     private static final Map<String, List<Event>> newEventsPerAccount = new ConcurrentHashMap<>();
     private static final Timer timer = new Timer();
 
-    public static void start(Account account) {
-        String receivedEventsKey = account.getReceivedEventsKey();
-
-        if (!eventsPerAccount.containsKey(receivedEventsKey)) {
-            eventsPerAccount.put(receivedEventsKey, new ArrayList<>());
-            newEventsPerAccount.put(receivedEventsKey, new ArrayList<>());
+    public static void start(String eventsKey) {
+        if (!eventsPerAccount.containsKey(eventsKey)) {
+            eventsPerAccount.put(eventsKey, new ArrayList<>());
+            newEventsPerAccount.put(eventsKey, new ArrayList<>());
         }
 
-        timer.scheduleAtFixedRate(new GetNewEventsFromClientExample(account.getReceivedEventsKey()), 0L, 1000L);
+        timer.scheduleAtFixedRate(new GetNewEventsFromClientExample(eventsKey), 0L, 1000L);
     }
 
-    public static List<Event> get(Account account) {
-        List<Event> allEvents = eventsPerAccount.get(account.getReceivedEventsKey());
+    public static List<Event> get(String eventsKey) {
+        List<Event> allEvents = eventsPerAccount.get(eventsKey);
         System.out.println("~ number of events: " + allEvents.size());
 
-        List<Event> newEvents = newEventsPerAccount.get(account.getReceivedEventsKey());
+        List<Event> newEvents = newEventsPerAccount.get(eventsKey);
         System.out.println("~ number of new events: " + newEvents.size());
 
         //"reset" new events for current account
-        newEventsPerAccount.put(account.getReceivedEventsKey(), new ArrayList<>());
+        newEventsPerAccount.put(eventsKey, new ArrayList<>());
 
         return newEvents;
     }
