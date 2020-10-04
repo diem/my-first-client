@@ -10,11 +10,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
 
 public class GetEventsExample {
-    private static final Map<String, Queue<EventExample>> eventsPerAccount = new ConcurrentHashMap<>();
-    private static final Map<String, Queue<EventExample>> newEventsPerAccount = new ConcurrentHashMap<>();
-    private static final Timer timer = new Timer();
+    private final Map<String, Queue<EventExample>> eventsPerAccount = new ConcurrentHashMap<>();
+    private final Map<String, Queue<EventExample>> newEventsPerAccount = new ConcurrentHashMap<>();
+    private final Timer timer = new Timer();
 
-    public static void start(String eventsKey) {
+    public void start(String eventsKey) {
         System.out.println("receivedEventsKey: " + eventsKey);
 
         if (!eventsPerAccount.containsKey(eventsKey)) {
@@ -25,7 +25,7 @@ public class GetEventsExample {
         timer.scheduleAtFixedRate(new GetNewEventsFromClientExample(eventsKey), 0, 1000);
     }
 
-    public static Queue<EventExample> get(String eventsKey) {
+    public Queue<EventExample> get(String eventsKey) {
         Queue<EventExample> allEvents = eventsPerAccount.get(eventsKey);
         System.out.println("~ number of events: " + allEvents.size());
 
@@ -38,7 +38,7 @@ public class GetEventsExample {
         return newEvents;
     }
 
-    private static class GetNewEventsFromClientExample extends TimerTask {
+    private class GetNewEventsFromClientExample extends TimerTask {
         private final String eventsKey;
         LibraClient client;
 
@@ -71,11 +71,11 @@ public class GetEventsExample {
         }
     }
 
-    public static void stop() {
+    public void stop() {
         timer.cancel();
     }
 
-    public static class EventExample implements Comparable<EventExample> {
+    public class EventExample implements Comparable<EventExample> {
         private final Event event;
 
         public EventExample(Event event) {
