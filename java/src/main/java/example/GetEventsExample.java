@@ -49,7 +49,6 @@ public class GetEventsExample {
         }
 
         public void run() {
-            System.out.println("GetNewEventsFromClientExample.run");
             try {
                 List<Event> events = client.getEvents(eventsKey, 0, 10);
 
