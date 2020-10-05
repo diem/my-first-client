@@ -15,8 +15,10 @@
  13. Get new events (3)
  14. Close listener
 """
-from libra import AuthKey
+from libra import AuthKey, identifier
+from libra.identifier import decode_intent
 
+from src.generate_intent_identifier_example import generate_intent_identifier
 from src.generate_keys_example import generate_private_key, generate_auth_key, extract_account_address
 from src.get_account_info_example import get_account_info
 from src.mint_example import mint
@@ -44,7 +46,9 @@ def main():
     print("#9 Create second account")
     mint(receiver_auth_key.hex(), 2560000000, "LBR")
     print("#10 Generate IntentIdentifier")
+    encoded_intent_identifier = generate_intent_identifier(receiver_auth_key.account_address(), 130000000, "LBR")
     print("#11 Deserialize IntentIdentifier")
+    intent_identifier = decode_intent(encoded_intent_identifier, identifier.TLB)
     print("#12 Peer 2 peer transaction")
     print("#13 Get new events (3)")
     print("#14 Stop event listener")
