@@ -22,6 +22,7 @@ from src.generate_intent_identifier_example import generate_intent_identifier
 from src.generate_keys_example import generate_private_key, generate_auth_key, extract_account_address
 from src.get_account_info_example import get_account_info
 from src.mint_example import mint
+from src.submit_peer_to_peer_transaction_example import submit_peer_to_peer_transaction
 
 
 def main():
@@ -50,6 +51,12 @@ def main():
     print("#11 Deserialize IntentIdentifier")
     intent_identifier = decode_intent(encoded_intent_identifier, identifier.TLB)
     print("#12 Peer 2 peer transaction")
+    submit_peer_to_peer_transaction(sender_private_key,
+                                    intent_identifier.amount,
+                                    receiver_auth_key.account_address(),
+                                    sender_auth_key.account_address(),
+                                    sender_account.sequence_number,
+                                    "LBR")
     print("#13 Get new events (3)")
     print("#14 Stop event listener")
 
