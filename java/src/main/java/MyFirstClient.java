@@ -1,8 +1,8 @@
 import example.*;
 import org.libra.AuthKey;
 import org.libra.PrivateKey;
-import org.libra.jsonrpctypes.JsonRpc;
 import org.libra.jsonrpctypes.JsonRpc.Account;
+import org.libra.jsonrpctypes.JsonRpc.Event;
 import org.libra.utils.CurrencyCode;
 
 import java.util.Queue;
@@ -41,7 +41,7 @@ public class MyFirstClient {
         getEventsExample.start(account.getReceivedEventsKey());
 
         System.out.println("#5 Get new events (1)");
-        Queue<GetEventsExample.EventExample> newEvents = getEventsExample.get(account.getReceivedEventsKey());
+        Queue<Event> newEvents = getEventsExample.get(account.getReceivedEventsKey());
         System.out.println(newEvents.size() + " new events was found");
 
         System.out.println("#6 Add money to account");
