@@ -2,10 +2,9 @@ import example.*;
 import org.libra.AuthKey;
 import org.libra.PrivateKey;
 import org.libra.jsonrpctypes.JsonRpc.Account;
-import org.libra.jsonrpctypes.JsonRpc.Event;
 import org.libra.utils.CurrencyCode;
 
-import java.util.List;
+import java.util.Queue;
 
 public class Main {
     /**
@@ -37,18 +36,19 @@ public class Main {
         Account account = GetAccountInfoExample.getAccountInfo(accountAddress);
 
         String receivedEventsKey = account.getReceivedEventsKey();
-        System.out.println("#4 Start event listener - events key: " + receivedEventsKey);
-        GetEventsExample.start(receivedEventsKey);
+        System.out.println("#4 Start event listener");
+        GetEventsExample getEventsExample = new GetEventsExample();
+        getEventsExample.start(receivedEventsKey);
 
         System.out.println("#5 Get new events (1)");
-        List<Event> newEvents = GetEventsExample.get(receivedEventsKey);
+        Queue<GetEventsExample.EventExample> newEvents = getEventsExample.get(receivedEventsKey);
         System.out.println(newEvents.size() + " new events was found");
 
         System.out.println("#6 Add money to account");
         MintExample.mint(authKey, "270000000", CurrencyCode.LBR);
 
         System.out.println("#7 Get new events (2)");
-        newEvents = GetEventsExample.get(receivedEventsKey);
+        newEvents = getEventsExample.get(receivedEventsKey);
         System.out.println(newEvents.size() + " new events was found");
 
         System.out.println("#8 Generate Keys");
@@ -62,10 +62,10 @@ public class Main {
         SubmitPeerToPeerTransactionExample.submitPeerToPeerTransaction(privateKey, authKey, account, receiverAuthKey);
 
         System.out.println("#11 Get new events (3)");
-        newEvents = GetEventsExample.get(receivedEventsKey);
+        newEvents = getEventsExample.get(receivedEventsKey);
         System.out.println(newEvents.size() + " new events was found");
 
         System.out.println("#12 Stop event listener");
-        GetEventsExample.stop();
+        getEventsExample.stop();
     }
 }
