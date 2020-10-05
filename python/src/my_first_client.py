@@ -31,6 +31,8 @@ def main():
     print("#6 Add money to account")
     print("#7 Get new events (2)")
     print("#8 Generate Keys")
+    receiver_private_key = generate_private_key()
+    receiver_auth_key: AuthKey = generate_auth_key(receiver_private_key)
     print("#9 Create second account")
     print("#10 Generate IntentIdentifier")
     print("#11 Deserialize IntentIdentifier")
