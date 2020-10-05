@@ -18,6 +18,7 @@
 from libra import AuthKey
 
 from src.generate_keys_example import generate_private_key, generate_auth_key
+from src.mint_example import mint
 
 
 def main():
@@ -25,6 +26,7 @@ def main():
     sender_private_key = generate_private_key()
     sender_auth_key: AuthKey = generate_auth_key(sender_private_key)
     print("#2 Create account")
+    mint(sender_auth_key.hex(), 1340000000, "LBR")
     print("#3 Get account information")
     print("#4 Start event listener")
     print("#5 Get new events (1)")
