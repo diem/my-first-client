@@ -11,20 +11,23 @@ public class GetEventsExample {
     private final Map<String, Queue<Event>> newEventsPerAccount = new HashMap<>();
     private final Timer timer = new Timer();
     private long start = 0;
+    private String eventsKey;
 
     /**
      * Start the pooling of events for required eventsKey
      *
      * @param eventsKey
      */
-    public void start(String eventsKey) {
-        System.out.println("receivedEventsKey: " + eventsKey);
+    public GetEventsExample(String eventsKey) {
+        this.eventsKey = eventsKey;
 
-        if (!newEventsPerAccount.containsKey(eventsKey)) {
-            newEventsPerAccount.put(eventsKey, new LinkedList<>());
+        System.out.println("receivedEventsKey: " + this.eventsKey);
+
+        if (!newEventsPerAccount.containsKey(this.eventsKey)) {
+            newEventsPerAccount.put(this.eventsKey, new LinkedList<>());
         }
 
-        timer.scheduleAtFixedRate(new EventPoolingTaskExample(eventsKey), 0, 1000);
+        timer.scheduleAtFixedRate(new EventPoolingTaskExample(this.eventsKey), 0, 1000);
     }
 
     /**

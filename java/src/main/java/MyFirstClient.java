@@ -37,8 +37,7 @@ public class MyFirstClient {
         Account account = GetAccountInfoExample.getAccountInfo(accountAddress);
 
         System.out.println("#4 Start event listener");
-        GetEventsExample getEventsExample = new GetEventsExample();
-        getEventsExample.start(account.getReceivedEventsKey());
+        GetEventsExample getEventsExample = new GetEventsExample(account.getReceivedEventsKey());
 
         System.out.println("#5 Get new events (1)");
         Queue<Event> newEvents = getEventsExample.get(account.getReceivedEventsKey());
