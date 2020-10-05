@@ -36,6 +36,7 @@ def main():
     print("#4 Start event listener")
     print("#5 Get new events (1)")
     print("#6 Add money to account")
+    mint(sender_auth_key, 270000000, "LBR")
     print("#7 Get new events (2)")
     print("#8 Generate Keys")
     print("#9 Create second account")
