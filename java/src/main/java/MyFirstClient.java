@@ -1,12 +1,13 @@
 import example.*;
 import org.libra.AuthKey;
 import org.libra.PrivateKey;
+import org.libra.jsonrpctypes.JsonRpc;
 import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.utils.CurrencyCode;
 
 import java.util.Queue;
 
-public class Main {
+public class MyFirstClient {
     /**
      * This code demonstrates basic flow for working with the LibraClient.
      * 1. Generate keys
