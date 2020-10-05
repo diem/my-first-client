@@ -84,7 +84,22 @@ public class GetEventsExample {
 
         @Override
         public boolean equals(Object o) {
-            return this.event.equals(((EventExample) o).event);
+            if (this == o) {
+                return true;
+            }
+
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            EventExample that = (EventExample) o;
+
+            return Objects.equals(event, that.event);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(event);
         }
 
         @Override
