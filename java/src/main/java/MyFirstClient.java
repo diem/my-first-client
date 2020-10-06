@@ -3,6 +3,7 @@ import org.libra.AuthKey;
 import org.libra.IntentIdentifier;
 import org.libra.PrivateKey;
 import org.libra.jsonrpctypes.JsonRpc.Account;
+import org.libra.jsonrpctypes.JsonRpc.Event;
 import org.libra.utils.CurrencyCode;
 
 import java.util.Queue;
@@ -10,7 +11,7 @@ import java.util.Queue;
 import static org.libra.AccountIdentifier.NetworkPrefix.TestnetPrefix;
 import static org.libra.IntentIdentifier.decode;
 
-public class Main {
+public class MyFirstClient {
     /**
      * This code demonstrates basic flow for working with the LibraClient.
      * 1. Generate keys
@@ -47,7 +48,7 @@ public class Main {
         getEventsExample.start(eventsKey);
 
         System.out.println("#5 Get new events (1)");
-        Queue<GetEventsExample.EventExample> newEvents = getEventsExample.get(eventsKey);
+        Queue<Event> newEvents = getEventsExample.get(eventsKey);
         System.out.println(newEvents.size() + " new events was found");
 
         System.out.println("#6 Add money to account");
