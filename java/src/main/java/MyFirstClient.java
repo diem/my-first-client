@@ -6,7 +6,7 @@ import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.jsonrpctypes.JsonRpc.Event;
 import org.libra.utils.CurrencyCode;
 
-import java.util.Queue;
+import java.util.List;
 
 import static org.libra.AccountIdentifier.NetworkPrefix.TestnetPrefix;
 import static org.libra.IntentIdentifier.decode;
@@ -47,14 +47,14 @@ public class MyFirstClient {
         GetEventsExample getEventsExample = new GetEventsExample(eventsKey);
 
         System.out.println("#5 Get new events (1)");
-        Queue<Event> newEvents = getEventsExample.get(eventsKey);
+        List<Event> newEvents = getEventsExample.get();
         System.out.println(newEvents.size() + " new events was found");
 
         System.out.println("#6 Add money to account");
         MintExample.mint(senderAuthKey, "270000000", CurrencyCode.LBR);
 
         System.out.println("#7 Get new events (2)");
-        newEvents = getEventsExample.get(eventsKey);
+        newEvents = getEventsExample.get();
         System.out.println(newEvents.size() + " new events was found");
 
         System.out.println("#8 Generate Keys");
@@ -79,7 +79,7 @@ public class MyFirstClient {
                 intentIdentifier.getCurrency());
 
         System.out.println("#13 Get new events (3)");
-        newEvents = getEventsExample.get(eventsKey);
+        newEvents = getEventsExample.get();
         System.out.println(newEvents.size() + " new events was found");
 
         System.out.println("#14 Stop event listener");

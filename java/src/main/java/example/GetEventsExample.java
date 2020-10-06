@@ -8,24 +8,18 @@ import org.libra.jsonrpctypes.JsonRpc.Event;
 import java.util.*;
 
 public class GetEventsExample {
-    private final Map<String, Queue<Event>> newEventsPerAccount = new HashMap<>();
+    private Queue<Event> eventQueue = new LinkedList<>();
     private final Timer timer = new Timer();
     private long start = 0;
-    private String eventsKey;
+    private final String eventsKey;
 
     /**
      * Start the pooling of events for required eventsKey
-     *
-     * @param eventsKey
      */
     public GetEventsExample(String eventsKey) {
         this.eventsKey = eventsKey;
 
         System.out.println("receivedEventsKey: " + this.eventsKey);
-
-        if (!newEventsPerAccount.containsKey(this.eventsKey)) {
-            newEventsPerAccount.put(this.eventsKey, new LinkedList<>());
-        }
 
         timer.scheduleAtFixedRate(new EventPoolingTaskExample(this.eventsKey), 0, 1000);
     }
@@ -34,15 +28,14 @@ public class GetEventsExample {
      * Retrieve all new events that been collected since the previous invoke
      * Reset the {newEventsPerAccount} list to avoid duplications
      *
-     * @param eventsKey
      * @return newEvents
      */
-    public Queue<Event> get(String eventsKey) {
-        Queue<Event> newEvents = newEventsPerAccount.get(eventsKey);
-        System.out.println("~ number of new events: " + newEvents.size());
+    public List<Event> get() {
+        System.out.println("~ number of new events: " + eventQueue.size());
 
-        //"reset" new events for current event key
-        newEventsPerAccount.put(eventsKey, new LinkedList<>());
+        List<Event> newEvents = new ArrayList<>(eventQueue);
+
+        eventQueue = new LinkedList<>();
 
         return newEvents;
     }
@@ -63,13 +56,9 @@ public class GetEventsExample {
         public void run() {
             try {
                 List<Event> events = client.getEvents(eventsKey, start, 10);
-
-                events.forEach(event -> {
-                    if (!newEventsPerAccount.get(eventsKey).contains(event)) {
-                        start = event.getSequenceNumber() + 1;
-                        newEventsPerAccount.get(eventsKey).add(event);
-                    }
-                });
+                eventQueue.addAll(events);
+                events.forEach(event -> start = event.getSequenceNumber() + 1
+                );
             } catch (LibraException e) {
                 throw new RuntimeException(e);
             }
