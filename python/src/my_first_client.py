@@ -21,6 +21,7 @@ from libra.identifier import decode_intent
 from src.generate_intent_identifier_example import generate_intent_identifier
 from src.generate_keys_example import generate_private_key, generate_auth_key, extract_account_address
 from src.get_account_info_example import get_account_info
+from src.get_events_example import GetEventsExample
 from src.mint_example import mint
 from src.submit_peer_to_peer_transaction_example import submit_peer_to_peer_transaction
 
@@ -39,10 +40,19 @@ def main():
 
     events_key = sender_account.received_events_key
     print("#4 Start event listener")
+    get_events_example = GetEventsExample(events_key)
+
     print("#5 Get new events (1)")
+    new_events = get_events_example.get()
+    print(f"{len(new_events)} new events was found")
+
     print("#6 Add money to account")
     mint(sender_auth_key.hex(), 270000000, "LBR")
+
     print("#7 Get new events (2)")
+    new_events = get_events_example.get()
+    print(f"{len(new_events)} new events was found")
+
     print("#8 Generate Keys")
     receiver_private_key = generate_private_key()
     receiver_auth_key: AuthKey = generate_auth_key(receiver_private_key)
@@ -59,7 +69,11 @@ def main():
                                     sender_auth_key.account_address(),
                                     sender_account.sequence_number,
                                     "LBR")
+
     print("#13 Get new events (3)")
+    new_events = get_events_example.get()
+    print(f"{len(new_events)} new events was found")
+
     print("#14 Stop event listener")
 
 
