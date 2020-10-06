@@ -75,6 +75,7 @@ def main():
     print(f"{len(new_events)} new events was found")
 
     print("#14 Stop event listener")
+    get_events_example.stop()
 
 
 if __name__ == "__main__":
