@@ -26,7 +26,7 @@ public class SubmitPeerToPeerTransactionExample {
         //Create script
         TransactionPayload script = generateScript(receiverAccountAddress, amount, currencyCode);
         //Create transaction
-        RawTransaction rawTransaction = generateRawTransaction(script, senderAccountAddress, sequenceNumber, 1000000L, 0L, System.currentTimeMillis());
+        RawTransaction rawTransaction = generateRawTransaction(script, senderAccountAddress, sequenceNumber, 1000000L, 0L, (System.currentTimeMillis() / 1000) + 300);
         //Sign transaction
         SignedTransaction st = Signer.sign(privateKey, rawTransaction);
         //Submit transaction
