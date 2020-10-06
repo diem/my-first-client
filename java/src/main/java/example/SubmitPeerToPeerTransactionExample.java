@@ -1,68 +1,80 @@
 package example;
 
 import com.novi.serde.Bytes;
-import org.libra.*;
+import org.libra.LibraClient;
+import org.libra.LibraException;
+import org.libra.PrivateKey;
+import org.libra.Signer;
 import org.libra.jsonrpc.LibraJsonRpcClient;
-import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.jsonrpctypes.JsonRpc.Transaction;
 import org.libra.stdlib.Helpers;
+import org.libra.types.AccountAddress;
 import org.libra.types.RawTransaction;
 import org.libra.types.SignedTransaction;
 import org.libra.types.TransactionPayload;
 import org.libra.utils.CurrencyCode;
 
 public class SubmitPeerToPeerTransactionExample {
-    public static void submitPeerToPeerTransaction(PrivateKey privateKey, AuthKey authKey, Account account, AuthKey receiverAuthKey) {
+    public static void submitPeerToPeerTransaction(PrivateKey privateKey,
+                                                   long amount,
+                                                   AccountAddress receiverAccountAddress,
+                                                   AccountAddress senderAccountAddress,
+                                                   long sequenceNumber,
+                                                   String currencyCode) {
         //Connect to testnet
         LibraClient client = new LibraJsonRpcClient(Testnet.NET_URL, Testnet.CHAIN_ID);
         //Create script
-        TransactionPayload script = generateScript(receiverAuthKey);
+        TransactionPayload script = generateScript(receiverAccountAddress, amount, currencyCode);
         //Create transaction
-        RawTransaction rawTransaction = generateRawTransaction(authKey, account, script);
+        RawTransaction rawTransaction = generateRawTransaction(script, senderAccountAddress, sequenceNumber, 1000000L, 0L, (System.currentTimeMillis() / 1000) + 300);
         //Sign transaction
         SignedTransaction st = Signer.sign(privateKey, rawTransaction);
         //Submit transaction
-        submitTransaction(client, st);
+        try {
+            submitTransaction(client, st);
+        } catch (LibraException e) {
+            throw new RuntimeException("Failed to submit transaction", e);
+        }
         //Wait for the transaction to complete
-        waitForTransaction(client, st);
-    }
-
-    private static void waitForTransaction(LibraClient client, SignedTransaction st) {
         try {
-            Transaction transaction = client.waitForTransaction(st, 100000);
-
-            System.out.println(transaction);
+            waitForTransaction(client, st);
         } catch (LibraException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed while waiting to transaction ", e);
         }
     }
 
-    private static void submitTransaction(LibraClient client, SignedTransaction st) {
-        try {
-            client.submit(st);
-        } catch (LibraException e) {
-            throw new RuntimeException(e);
-        }
+    private static void waitForTransaction(LibraClient client, SignedTransaction st) throws LibraException {
+        Transaction transaction = client.waitForTransaction(st, 100000);
+
+        System.out.println(transaction);
     }
 
-    private static RawTransaction generateRawTransaction(AuthKey authKey, Account account, TransactionPayload script) {
+    private static void submitTransaction(LibraClient client, SignedTransaction st) throws LibraException {
+        client.submit(st);
+    }
+
+    private static RawTransaction generateRawTransaction(TransactionPayload script,
+                                                         AccountAddress senderAccountAddress,
+                                                         long sequenceNumber, long maxGasAmount,
+                                                         long gasUnitPrice, long expirationTimestampSecs) {
         return new RawTransaction(
-                authKey.accountAddress(),
-                account.getSequenceNumber(),
+                senderAccountAddress,
+                sequenceNumber,
                 script,
-                1000000L,
-                0L,
+                maxGasAmount,
+                gasUnitPrice,
                 CurrencyCode.LBR,
-                100000000000L,
+                expirationTimestampSecs,
                 Testnet.CHAIN_ID);
     }
 
-    private static TransactionPayload generateScript(AuthKey receiverAuthKey) {
+    private static TransactionPayload generateScript(AccountAddress receiverAccountAddress,
+                                                     long amount, String currencyCode) {
         return new TransactionPayload.Script(
                 Helpers.encode_peer_to_peer_with_metadata_script(
-                        CurrencyCode.typeTag(CurrencyCode.LBR),
-                        receiverAuthKey.accountAddress(),
-                        1120000000L,
+                        CurrencyCode.typeTag(currencyCode),
+                        receiverAccountAddress,
+                        amount,
                         new Bytes(new byte[0]),
                         new Bytes(new byte[0])));
     }

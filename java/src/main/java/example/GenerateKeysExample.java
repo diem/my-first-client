@@ -1,8 +1,11 @@
 package example;
+
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
 import org.libra.AuthKey;
 import org.libra.Ed25519PrivateKey;
 import org.libra.PrivateKey;
+import org.libra.types.AccountAddress;
+import org.libra.utils.Hex;
 
 import java.security.SecureRandom;
 
@@ -16,15 +19,15 @@ public class GenerateKeysExample {
 
     public static AuthKey generateAuthKey(PrivateKey privateKey) {
         AuthKey authKey = AuthKey.ed24419(privateKey.publicKey());
-        getGeneratedAddress(authKey);
+        String accountAddress = extractAccountAddress(authKey);
+
+        System.out.println("~ Generated address: " + accountAddress);
 
         return authKey;
     }
 
-    public static String getGeneratedAddress(AuthKey authKey) {
-        String accountAddress = authKey.hex().toLowerCase().substring(32, authKey.hex().length());
-        System.out.println("Generated address: " + accountAddress);
-
-        return accountAddress;
+    public static String extractAccountAddress(AuthKey authKey) {
+        AccountAddress accountAddress = authKey.accountAddress();
+        return Hex.encode(accountAddress.value);
     }
 }
