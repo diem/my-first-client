@@ -36,6 +36,8 @@ def main():
 
     print("#3 Get account information")
     sender_account = get_account_info(sender_account_address)
+
+    events_key = sender_account.received_events_key
     print("#4 Start event listener")
     print("#5 Get new events (1)")
     print("#6 Add money to account")
