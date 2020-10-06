@@ -5,23 +5,23 @@ import org.libra.LibraException;
 import org.libra.jsonrpc.LibraJsonRpcClient;
 import org.libra.jsonrpctypes.JsonRpc.Event;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GetEventsExample {
-    private Queue<Event> eventQueue = new LinkedList<>();
+    private List<Event> newEvents = new LinkedList<>();
     private final Timer timer = new Timer();
     private long start = 0;
-    private final String eventsKey;
 
     /**
      * Start the pooling of events for required eventsKey
      */
     public GetEventsExample(String eventsKey) {
-        this.eventsKey = eventsKey;
+        System.out.println("receivedEventsKey: " + eventsKey);
 
-        System.out.println("receivedEventsKey: " + this.eventsKey);
-
-        timer.scheduleAtFixedRate(new EventPoolingTaskExample(this.eventsKey), 0, 1000);
+        timer.scheduleAtFixedRate(new EventPoolingTaskExample(eventsKey), 0, 1000);
     }
 
     /**
@@ -31,13 +31,13 @@ public class GetEventsExample {
      * @return newEvents
      */
     public List<Event> get() {
-        System.out.println("~ number of new events: " + eventQueue.size());
+        System.out.println("~ number of new events: " + newEvents.size());
 
-        List<Event> newEvents = new ArrayList<>(eventQueue);
+        List<Event> newEventsCopy = new LinkedList<>(newEvents);
 
-        eventQueue = new LinkedList<>();
+        newEvents = new LinkedList<>();
 
-        return newEvents;
+        return newEventsCopy;
     }
 
     /**
@@ -56,7 +56,7 @@ public class GetEventsExample {
         public void run() {
             try {
                 List<Event> events = client.getEvents(eventsKey, start, 10);
-                eventQueue.addAll(events);
+                newEvents.addAll(events);
                 events.forEach(event -> start = event.getSequenceNumber() + 1
                 );
             } catch (LibraException e) {
