@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from libra import jsonrpc
+from timeloop import Timeloop
 from timeloop.job import Job
 
 from src.testnet import JSON_RPC_URL
@@ -14,9 +15,10 @@ class GetEventsExample:
         self.new_events = []
         self.start = 0
         print(f"events_key: {self.events_key}")
-        self.job = Job(interval=timedelta(seconds=30), execute=pool_new_events(self))
-        self.job.run()
-        print("finsh init GetEventsExample")
+        self.tl = Timeloop()
+        self.tl.start()
+        self.tl.job(Job(interval=timedelta(seconds=30), execute=pool_new_events(self)))
+        print("finish init GetEventsExample")
 
     # Reset the {newEventsPerAccount} list to avoid duplications
     def get(self):
@@ -29,7 +31,6 @@ class GetEventsExample:
         return new_events_copy
 
     def stop(self):
-        self.job.stop()
         self.tl.stop()
 
 
