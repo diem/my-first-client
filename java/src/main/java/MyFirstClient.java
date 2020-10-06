@@ -44,8 +44,7 @@ public class MyFirstClient {
 
         String eventsKey = senderAccount.getReceivedEventsKey();
         System.out.println("#4 Start event listener");
-        GetEventsExample getEventsExample = new GetEventsExample();
-        getEventsExample.start(eventsKey);
+        GetEventsExample getEventsExample = new GetEventsExample(eventsKey);
 
         System.out.println("#5 Get new events (1)");
         Queue<Event> newEvents = getEventsExample.get(eventsKey);
