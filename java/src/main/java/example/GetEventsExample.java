@@ -5,13 +5,10 @@ import org.libra.LibraException;
 import org.libra.jsonrpc.LibraJsonRpcClient;
 import org.libra.jsonrpctypes.JsonRpc.Event;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class GetEventsExample {
-    private List<Event> newEvents = new LinkedList<>();
+    private List<Event> newEvents = Collections.synchronizedList(new LinkedList<>());
     private final Timer timer = new Timer();
     private long start = 0;
 
@@ -26,16 +23,20 @@ public class GetEventsExample {
 
     /**
      * Retrieve all new events that been collected since the previous invoke
-     * Reset the {newEventsPerAccount} list to avoid duplications
+     * Reset the {newEvents} list to avoid duplications
      *
-     * @return newEvents
+     * @return newEventsCopy
      */
     public List<Event> get() {
         System.out.println("~ number of new events: " + newEvents.size());
 
-        List<Event> newEventsCopy = new LinkedList<>(newEvents);
+        List<Event> newEventsCopy;
 
-        newEvents = new LinkedList<>();
+        synchronized (newEvents) {
+            newEventsCopy = new LinkedList<>(newEvents);
+
+            newEvents = Collections.synchronizedList(new LinkedList<>());
+        }
 
         return newEventsCopy;
     }
@@ -56,7 +57,11 @@ public class GetEventsExample {
         public void run() {
             try {
                 List<Event> events = client.getEvents(eventsKey, start, 10);
-                newEvents.addAll(events);
+
+                synchronized (newEvents) {
+                    newEvents.addAll(events);
+                }
+
                 events.forEach(event -> start = event.getSequenceNumber() + 1
                 );
             } catch (LibraException e) {
