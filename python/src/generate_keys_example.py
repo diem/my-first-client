@@ -22,10 +22,15 @@ def generate_auth_key(private_key: Ed25519PrivateKey) -> AuthKey:
     return AuthKey.from_public_key(private_key.public_key())
 
 
+def generate_auth_key_():
+    private_key = generate_private_key()
+
+    return generate_auth_key(private_key);
+
+
 def extract_account_address(auth_key: AuthKey):
     account_address = auth_key.account_address();
     print(account_address)
-    # Hex.encode(account_address.value);
 
 
 if __name__ == "__main__":
