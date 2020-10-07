@@ -26,8 +26,15 @@ public class GenerateKeysExample {
         return authKey;
     }
 
+    public static AuthKey generateAuthKey() {
+        PrivateKey privateKey = generatePrivateKey();
+
+        return generateAuthKey(privateKey);
+    }
+
     public static String extractAccountAddress(AuthKey authKey) {
         AccountAddress accountAddress = authKey.accountAddress();
+
         return Hex.encode(accountAddress.value);
     }
 }

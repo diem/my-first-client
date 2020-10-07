@@ -1,76 +1,70 @@
 package example;
 
+import org.libra.AuthKey;
 import org.libra.LibraClient;
 import org.libra.LibraException;
 import org.libra.jsonrpc.LibraJsonRpcClient;
+import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.jsonrpctypes.JsonRpc.Event;
+import org.libra.utils.CurrencyCode;
 
-import java.util.*;
+import java.util.List;
 
 public class GetEventsExample {
-    private List<Event> newEvents = Collections.synchronizedList(new LinkedList<>());
-    private final Timer timer = new Timer();
-    private long start = 0;
+    private static final LibraClient client = new LibraJsonRpcClient(Testnet.NET_URL, Testnet.CHAIN_ID);
+    private static long start = 0;
 
-    /**
-     * Start the pooling of events for required eventsKey
-     */
-    public GetEventsExample(String eventsKey) {
-        System.out.println("receivedEventsKey: " + eventsKey);
+    public static void main(String[] args) {
+        //create new account
+        AuthKey authKey = GenerateKeysExample.generateAuthKey();
+        MintExample.mint(authKey, "110000000", CurrencyCode.LBR);
+        String accountAddress = GenerateKeysExample.extractAccountAddress(authKey);
+        //get account events key
+        Account account = GetAccountInfoExample.getAccountInfo(accountAddress);
+        String eventsKey = account.getReceivedEventsKey();
 
-        timer.scheduleAtFixedRate(new EventPoolingTaskExample(eventsKey), 0, 1000);
+        //start minter to demonstrates events creation
+        startMinter(authKey);
+
+        //demonstrates events subscription
+        subscribe(eventsKey);
     }
 
-    /**
-     * Retrieve all new events that been collected since the previous invoke
-     * Reset the {newEvents} list to avoid duplications
-     *
-     * @return newEventsCopy
-     */
-    public List<Event> get() {
-        System.out.println("~ number of new events: " + newEvents.size());
-
-        List<Event> newEventsCopy;
-
-        synchronized (newEvents) {
-            newEventsCopy = new LinkedList<>(newEvents);
-
-            newEvents = Collections.synchronizedList(new LinkedList<>());
+    private static List<Event> getEventsByKey(String eventsKey) {
+        try {
+            return client.getEvents(eventsKey, start, 10);
+        } catch (LibraException e) {
+            throw new RuntimeException(e);
         }
-
-        return newEventsCopy;
     }
 
-    /**
-     * EventPoolingTaskExample implement the TimerTask which retrieve Event objects from LibraClient
-     */
-    private class EventPoolingTaskExample extends TimerTask {
-        private final String eventsKey;
-        private final LibraClient client;
+    public static void subscribe(String eventsKey) {
+        Runnable listener = () -> {
+            for (int i = 0; i < 15; i++) {
+                List<Event> events = getEventsByKey(eventsKey);
 
-        public EventPoolingTaskExample(String eventsKey) {
-            this.eventsKey = eventsKey;
-            //Connect to testnet
-            client = new LibraJsonRpcClient(Testnet.NET_URL, Testnet.CHAIN_ID);
-        }
-
-        public void run() {
-            try {
-                List<Event> events = client.getEvents(eventsKey, start, 10);
-
-                synchronized (newEvents) {
-                    newEvents.addAll(events);
+                start += events.size();
+                System.out.println(events);
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
-
-                events.forEach(event -> start = event.getSequenceNumber() + 1
-                );
-            } catch (LibraException e) {
-                throw new RuntimeException(e);
             }
-        }
+        };
+
+        Thread listenerThread = new Thread(listener);
+        listenerThread.start();
     }
 
-    public void stop() {
-        timer.cancel();
+    private static void startMinter(AuthKey authKey) {
+        Runnable minter = () -> {
+            for (int i = 0; i < 10; i++) {
+                MintExample.mint(authKey, "110000000", CurrencyCode.LBR);
+            }
+        };
+
+        Thread minterThread = new Thread(minter);
+        minterThread.start();
     }
 }
