@@ -8,8 +8,22 @@ import org.libra.types.AccountAddress;
 import org.libra.utils.Hex;
 
 import java.security.SecureRandom;
+import java.util.Arrays;
 
+/**
+ * GenerateKeysExample demonstrates the required steps to generate keys for an account on the Libra blockchain
+ */
 public class GenerateKeysExample {
+    public static void main(String[] args) {
+        PrivateKey privateKey = generatePrivateKey();
+
+        System.out.println(Hex.encode(privateKey.publicKey()));
+
+        AuthKey authKey = generateAuthKey(privateKey);
+
+        System.out.println(authKey.hex());
+    }
+
     public static PrivateKey generatePrivateKey() {
         SecureRandom random = new SecureRandom();
         Ed25519PrivateKeyParameters privateKeyParams = new Ed25519PrivateKeyParameters(random);
