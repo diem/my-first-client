@@ -18,14 +18,17 @@ def generate_private_key() -> Ed25519PrivateKey:
     return Ed25519PrivateKey.generate()
 
 
-def generate_auth_key(private_key: Ed25519PrivateKey) -> AuthKey:
+def generate_auth_key(private_key: Ed25519PrivateKey = None) -> AuthKey:
+    if not private_key:
+        private_key = generate_private_key()
+
     return AuthKey.from_public_key(private_key.public_key())
 
 
 def extract_account_address(auth_key: AuthKey):
     account_address = auth_key.account_address();
     print(account_address)
-    # Hex.encode(account_address.value);
+
 
 
 if __name__ == "__main__":
