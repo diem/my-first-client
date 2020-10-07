@@ -1,11 +1,9 @@
 package example;
 
 import com.novi.serde.Bytes;
-import org.libra.LibraClient;
-import org.libra.LibraException;
-import org.libra.PrivateKey;
-import org.libra.Signer;
+import org.libra.*;
 import org.libra.jsonrpc.LibraJsonRpcClient;
+import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.jsonrpctypes.JsonRpc.Transaction;
 import org.libra.stdlib.Helpers;
 import org.libra.types.AccountAddress;
@@ -14,7 +12,27 @@ import org.libra.types.SignedTransaction;
 import org.libra.types.TransactionPayload;
 import org.libra.utils.CurrencyCode;
 
+/**
+ * SubmitPeerToPeerTransactionExample demonstrates currencies transfer between 2 accounts on the Libra blockchain
+ */
 public class SubmitPeerToPeerTransactionExample {
+    public static void main(String[] args) {
+        //create sender account
+        PrivateKey senderPrivateKey = GenerateKeysExample.generatePrivateKey();
+        AuthKey senderAuthKey = GenerateKeysExample.generateAuthKey(senderPrivateKey);
+        MintExample.mint(senderAuthKey, "1340000000", "LBR");
+
+        //get sender account sequence number
+        String senderAccountAddress = GenerateKeysExample.extractAccountAddress(senderAuthKey);
+        Account account = GetAccountInfoExample.getAccountInfo(senderAccountAddress);
+
+        //create receiver account
+        AuthKey receiverAuthKey = GenerateKeysExample.generateAuthKey();
+        MintExample.mint(senderAuthKey, "10000000", "LBR");
+
+        submitPeerToPeerTransaction(senderPrivateKey, 130000000L, receiverAuthKey.accountAddress(), senderAuthKey.accountAddress(), account.getSequenceNumber(), CurrencyCode.LBR);
+    }
+
     public static void submitPeerToPeerTransaction(PrivateKey privateKey,
                                                    long amount,
                                                    AccountAddress receiverAccountAddress,
