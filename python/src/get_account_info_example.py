@@ -1,7 +1,7 @@
 from libra import jsonrpc
 from libra.jsonrpc import Account
 
-from src.generate_keys_example import generate_auth_key_, extract_account_address
+from src.generate_keys_example import extract_account_address, generate_auth_key
 from src.mint_example import mint
 from src.testnet import JSON_RPC_URL
 
@@ -12,7 +12,7 @@ get_account_info_example demonstrates the required operation to retrieve account
 
 def main():
     # create account
-    auth_key = generate_auth_key_()
+    auth_key = generate_auth_key()
     mint(auth_key.hex(), 1340000000, "LBR")
     account_address = extract_account_address(auth_key)
 
