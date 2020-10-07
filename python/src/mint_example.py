@@ -1,6 +1,6 @@
 import requests
 
-from src.generate_keys_example import generate_auth_key_
+from src.generate_keys_example import generate_auth_key
 from src.testnet import FAUCET_URL
 
 """
@@ -10,7 +10,7 @@ from src.testnet import FAUCET_URL
 
 
 def main():
-    auth_key = generate_auth_key_()
+    auth_key = generate_auth_key()
 
     # use mint to create new account
     mint(auth_key.hex(), 192000000, "LBR")
