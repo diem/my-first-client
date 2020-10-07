@@ -15,6 +15,7 @@ from libra import AuthKey
 
 from src.generate_keys_example import generate_private_key, generate_auth_key, extract_account_address
 from src.get_account_info_example import get_account_info
+from src.get_events_example import subscribe
 from src.intent_identifier_example import generate_intent_identifier, decode_intent
 from src.mint_example import mint
 from src.submit_peer_to_peer_transaction_example import submit_peer_to_peer_transaction
@@ -24,6 +25,7 @@ def main():
     print("#1 Generate Keys")
     sender_private_key = generate_private_key()
     sender_auth_key: AuthKey = generate_auth_key(sender_private_key)
+
     print("#2 Create account")
     mint(sender_auth_key.hex(), 1340000000, "LBR")
 
@@ -31,13 +33,18 @@ def main():
 
     print("#3 Get account information")
     sender_account = get_account_info(sender_account_address)
+
+    events_key = sender_account.received_events_key
     print("#4 Start event listener")
+    subscribe(events_key)
+
     print("#5 Add money to account")
     mint(sender_auth_key.hex(), 270000000, "LBR")
 
     print("#6 Generate Keys")
     receiver_private_key = generate_private_key()
     receiver_auth_key: AuthKey = generate_auth_key(receiver_private_key)
+
     print("#7 Create second account")
     mint(receiver_auth_key.hex(), 2560000000, "LBR")
 
