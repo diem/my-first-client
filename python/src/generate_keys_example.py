@@ -14,5 +14,11 @@ def generate_auth_key(private_key: Ed25519PrivateKey) -> AuthKey:
     return auth_key
 
 
+def generate_auth_key_():
+    private_key = generate_private_key()
+
+    return generate_auth_key(private_key)
+
+
 def extract_account_address(auth_key: AuthKey) -> str:
     return utils.account_address_hex(auth_key.account_address())

@@ -1,42 +1,60 @@
-from datetime import timedelta
+import time
+from random import randrange
+from threading import Thread
 
 from libra import jsonrpc
-from timeloop import Timeloop
-from timeloop.job import Job
 
+from src.generate_keys_example import generate_auth_key_, extract_account_address
+from src.get_account_info_example import get_account_info
+from src.mint_example import mint
 from src.testnet import JSON_RPC_URL
 
+client = jsonrpc.Client(JSON_RPC_URL)
 
-class GetEventsExample:
-    # Start the pooling of events for required eventsKey
-    def __init__(self, events_key):
-        print("init GetEventsExample")
-        self.events_key = events_key
-        self.new_events = []
-        self.start = 0
-        print(f"events_key: {self.events_key}")
-        self.tl = Timeloop()
-        self.tl.start()
-        self.tl.job(Job(interval=timedelta(seconds=30), execute=pool_new_events(self)))
-        print("finish init GetEventsExample")
-
-    # Reset the {newEventsPerAccount} list to avoid duplications
-    def get(self):
-        new_events_copy = self.new_events
-        print(f"~ number of new events: {len(new_events_copy)}")
-
-        # "reset" new events for current event key
-        self.new_events = []
-
-        return new_events_copy
-
-    def stop(self):
-        self.tl.stop()
+"""get_events_example demonstrates how to subscribe to a specific events stream base on events key"""
 
 
-def pool_new_events(events_example: GetEventsExample):
-    print("run pool_new_events")
-    client = jsonrpc.Client(JSON_RPC_URL)
-    events = client.get_events(events_example.events_key, events_example.start, 10)
-    events_example.new_events.append(events)
-    print("finish pool_new_events")
+def main():
+    # create new account
+    auth_key = generate_auth_key_()
+    mint(auth_key.hex(), 110000000, "LBR")
+    account_address = extract_account_address(auth_key)
+
+    # get account events key
+    account = get_account_info(account_address)
+    events_key = account.received_events_key
+
+    # start minter to demonstrates events creation
+    start_minter(auth_key)
+
+    # demonstrates events subscription
+    subscribe(events_key)
+
+
+def subscribe_(events_key):
+    start = 0
+
+    for x in range(0, 15):
+        events = client.get_events(events_key, start, 10)
+        start += len(events)
+        print(events)
+        time.sleep(3)
+
+
+def minter(auth_key):
+    for x in range(0, 10):
+        amount = randrange(10, 19) * 10000000
+        mint(auth_key.hex(), amount, "LBR")
+        time.sleep(1)
+
+
+def subscribe(events_key):
+    Thread(target=subscribe_, args=(events_key,)).start()
+
+
+def start_minter(auth_key):
+    Thread(target=minter, args=(auth_key,)).start()
+
+
+if __name__ == "__main__":
+    main()
