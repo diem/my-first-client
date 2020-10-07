@@ -10,6 +10,9 @@ import org.libra.utils.CurrencyCode;
 
 import java.util.List;
 
+/**
+ * GetEventsExample demonstrates how to subscribe to a specific events stream base on events key
+ */
 public class GetEventsExample {
     private static final LibraClient client = new LibraJsonRpcClient(Testnet.NET_URL, Testnet.CHAIN_ID);
     private static long start = 0;
