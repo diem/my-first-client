@@ -16,7 +16,6 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class GetEventsExample {
     private static final LibraClient client = new LibraJsonRpcClient(Testnet.NET_URL, Testnet.CHAIN_ID);
-    private static long start = 0;
 
     public static void main(String[] args) {
         //create new account
@@ -36,6 +35,8 @@ public class GetEventsExample {
 
     public static void subscribe(String eventsKey) {
         Runnable listener = () -> {
+            long start = 0;
+
             for (int i = 0; i < 15; i++) {
                 List<Event> events;
 
