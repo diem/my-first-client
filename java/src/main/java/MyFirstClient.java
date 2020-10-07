@@ -5,9 +5,6 @@ import org.libra.PrivateKey;
 import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.utils.CurrencyCode;
 
-import static org.libra.AccountIdentifier.NetworkPrefix.TestnetPrefix;
-import static org.libra.IntentIdentifier.decode;
-
 public class MyFirstClient {
     /**
      * This code demonstrates basic flow for working with the LibraClient.
@@ -50,10 +47,10 @@ public class MyFirstClient {
         MintExample.mint(receiverAuthKey, "2560000000", CurrencyCode.LBR);
 
         System.out.println("#8 Generate IntentIdentifier");
-        String intentIdentifierString = GenerateIntentIdentifierExample.generateIntentIdentifier(receiverAuthKey.accountAddress(), 130000000L, CurrencyCode.LBR);
+        String intentIdentifierString = IntentIdentifierExample.generateIntentIdentifier(receiverAuthKey.accountAddress(), 130000000L, CurrencyCode.LBR);
 
         System.out.println("#9 Deserialize IntentIdentifier");
-        IntentIdentifier intentIdentifier = decode(TestnetPrefix, intentIdentifierString);
+        IntentIdentifier intentIdentifier = IntentIdentifierExample.decodeIntentIdentifier(intentIdentifierString);
 
         System.out.println("#10 Peer 2 peer transaction");
         SubmitPeerToPeerTransactionExample.submitPeerToPeerTransaction(senderPrivateKey,
