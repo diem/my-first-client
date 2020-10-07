@@ -29,7 +29,7 @@ def generate_auth_key(private_key: Ed25519PrivateKey) -> AuthKey:
 def generate_auth_key_():
     private_key = generate_private_key()
 
-    return generate_auth_key(private_key);
+    return generate_auth_key(private_key)
 
 
 def extract_account_address(auth_key: AuthKey):
