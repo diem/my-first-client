@@ -9,6 +9,13 @@ from src.testnet import FAUCET_URL
 """
 
 
+def main():
+    auth_key = generate_auth_key()
+
+    # use mint to create new account
+    mint(auth_key.hex(), 192000000, "LBR")
+
+
 def mint(authkey: str, amount: int, currency_code: str) -> int:
     session = requests.Session()
     response = session.post(
@@ -21,13 +28,6 @@ def mint(authkey: str, amount: int, currency_code: str) -> int:
     )
     response.raise_for_status()
     return int(response.text)
-
-
-def main():
-    auth_key = generate_auth_key()
-
-    # use mint to create new account
-    mint(auth_key.hex(), 192000000, "LBR")
 
 
 if __name__ == "__main__":
