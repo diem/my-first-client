@@ -11,12 +11,11 @@
  9. Deserialize IntentIdentifier
  10. Transfer money between accounts (peer to peer transaction)
 """
-from libra import AuthKey, identifier
-from libra.identifier import decode_intent
+from libra import AuthKey
 
-from src.generate_intent_identifier_example import generate_intent_identifier
 from src.generate_keys_example import generate_private_key, generate_auth_key, extract_account_address
 from src.get_account_info_example import get_account_info
+from src.intent_identifier_example import generate_intent_identifier, decode_intent
 from src.mint_example import mint
 
 
@@ -45,7 +44,7 @@ def main():
     encoded_intent_identifier = generate_intent_identifier(receiver_auth_key.account_address(), 130000000, "LBR")
 
     print("#9 Deserialize IntentIdentifier")
-    intent_identifier = decode_intent(encoded_intent_identifier, identifier.TLB)
+    intent_identifier = decode_intent(encoded_intent_identifier)
 
     print("#10 Peer 2 peer transaction")
 
