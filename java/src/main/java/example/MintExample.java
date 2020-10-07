@@ -14,12 +14,17 @@ import java.net.URISyntaxException;
 
 import static org.libra.Testnet.FAUCET_SERVER_URL;
 
+/**
+ * MintExample demonstrates how to add currencies to account on the Libra blockchain
+ * The mint also use to create new account by adding currencies base on new auth_key
+ */
 public class MintExample {
     public static void mint(AuthKey authKey, String amount, String currencyCode) {
         URI build;
 
         try {
             URIBuilder builder = new URIBuilder(FAUCET_SERVER_URL);
+
             builder.setParameter("amount", amount).setParameter("auth_key", authKey.hex().toLowerCase())
                     .setParameter("currency_code", currencyCode);
             build = builder.build();
@@ -35,6 +40,7 @@ public class MintExample {
         try {
             HttpResponse response = httpClient.execute(post);
             String body = EntityUtils.toString(response.getEntity());
+
             if (response.getStatusLine().getStatusCode() != 200) {
                 throw new InvalidResponseException(response.getStatusLine().getStatusCode(), body);
             }
