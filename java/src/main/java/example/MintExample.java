@@ -19,6 +19,12 @@ import static org.libra.Testnet.FAUCET_SERVER_URL;
  * The mint also use to create new account by adding currencies base on new auth_key
  */
 public class MintExample {
+    public static void main(String[] args) {
+        AuthKey authKey = GenerateKeysExample.generateAuthKey();
+
+        //use mint to create new account
+        mint(authKey,"192000000","LBR");
+    }
     public static void mint(AuthKey authKey, String amount, String currencyCode) {
         URI build;
 
