@@ -30,8 +30,7 @@ def generate_auth_key(private_key: Ed25519PrivateKey = None) -> AuthKey:
 
 
 def extract_account_address(auth_key: AuthKey):
-    account_address = auth_key.account_address();
-    print(account_address)
+    return utils.account_address_hex(auth_key.account_address())
 
 
 if __name__ == "__main__":
