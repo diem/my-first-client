@@ -4,7 +4,7 @@ from src.generate_keys_example import generate_auth_key_
 from src.testnet import FAUCET_URL
 
 """
- MintExample demonstrates how to add currencies to account on the Libra blockchain
+ mint_example demonstrates how to add currencies to account on the Libra blockchain
  The mint also use to create new account by adding currencies base on new auth_key
 """
 
