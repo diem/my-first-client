@@ -16,8 +16,6 @@ public class GenerateKeysExample {
     public static void main(String[] args) {
         PrivateKey privateKey = generatePrivateKey();
 
-        System.out.println(Hex.encode(privateKey.publicKey()));
-
         AuthKey authKey = generateAuthKey(privateKey);
 
         System.out.println("~ Auth Key (HEX): " + authKey.hex());
