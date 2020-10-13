@@ -13,12 +13,12 @@
 """
 from libra import AuthKey
 
-from src.generate_keys_example import generate_private_key, generate_auth_key, extract_account_address
-from src.get_account_info_example import get_account_info
-from src.get_events_example import subscribe
-from src.intent_identifier_example import generate_intent_identifier, decode_intent
-from src.mint_example import mint
-from src.submit_peer_to_peer_transaction_example import submit_peer_to_peer_transaction
+from generate_keys_example import generate_private_key, generate_auth_key, extract_account_address
+from get_account_info_example import get_account_info
+from get_events_example import subscribe
+from intent_identifier_example import generate_intent_identifier, decode_intent
+from mint_example import mint
+from submit_peer_to_peer_transaction_example import submit_peer_to_peer_transaction
 
 
 def main():

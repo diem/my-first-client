@@ -1,7 +1,7 @@
 import requests
 
-from src.generate_keys_example import generate_auth_key
-from src.testnet import FAUCET_URL
+from generate_keys_example import generate_auth_key
+from testnet import FAUCET_URL
 
 """
  mint_example demonstrates how to add currencies to account on the Libra blockchain
@@ -26,7 +26,9 @@ def mint(authkey: str, amount: int, currency_code: str) -> int:
             "currency_code": currency_code,
         },
     )
+
     response.raise_for_status()
+
     return int(response.text)
 
 

@@ -4,10 +4,10 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from libra import jsonrpc, stdlib, utils, libra_types
 from libra.libra_types import AccountAddress
 
-from src.generate_keys_example import generate_private_key, generate_auth_key, extract_account_address
-from src.get_account_info_example import get_account_info
-from src.mint_example import mint
-from src.testnet import JSON_RPC_URL, CHAIN_ID
+from generate_keys_example import generate_private_key, generate_auth_key, extract_account_address
+from get_account_info_example import get_account_info
+from mint_example import mint
+from testnet import JSON_RPC_URL, CHAIN_ID
 
 """
 submit_peer_to_peer_transaction_example demonstrates currencies transfer between 2 accounts on the Libra blockchain

@@ -4,10 +4,10 @@ from threading import Thread
 
 from libra import jsonrpc
 
-from src.generate_keys_example import extract_account_address, generate_auth_key
-from src.get_account_info_example import get_account_info
-from src.mint_example import mint
-from src.testnet import JSON_RPC_URL
+from generate_keys_example import extract_account_address, generate_auth_key
+from get_account_info_example import get_account_info
+from mint_example import mint
+from testnet import JSON_RPC_URL
 
 client = jsonrpc.Client(JSON_RPC_URL)
 
@@ -37,8 +37,12 @@ def subscribe_(events_key):
     for x in range(0, 15):
         events = client.get_events(events_key, start, 10)
         start += len(events)
-        print(events)
+        print(f"~ ${len(events)} new events found")
         time.sleep(3)
+
+        for i in range(0, len(events)):
+            print(f"~ Event # ${i + 1}:")
+            print(events[i])
 
 
 def minter(auth_key):
