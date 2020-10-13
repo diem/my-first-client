@@ -21,13 +21,12 @@ public class IntentIdentifierExample {
         AuthKey authKey = GenerateKeysExample.generateAuthKey(privateKey);
         String intentIdentifierString = generateIntentIdentifier(authKey.accountAddress(), 130000000L, CurrencyCode.LBR);
 
-        System.out.println(intentIdentifierString);
-
         //deserialize IntentIdentifier
         IntentIdentifier intentIdentifier = decodeIntentIdentifier(intentIdentifierString);
-        System.out.println(Hex.encode(intentIdentifier.getAccountIdentifier().getAccountAddress().value));
-        System.out.println(intentIdentifier.getAmount());
-        System.out.println(intentIdentifier.getCurrency());
+
+        System.out.println("~ Account (HEX) from intent: " + Hex.encode(intentIdentifier.getAccountIdentifier().getAccountAddress().value));
+        System.out.println("~ Amount from intent: " + intentIdentifier.getAmount());
+        System.out.println("~ Currency from intent: " + intentIdentifier.getCurrency());
     }
 
     public static IntentIdentifier decodeIntentIdentifier(String intentIdentifierString) {
@@ -39,7 +38,7 @@ public class IntentIdentifierExample {
         IntentIdentifier intentIdentifier = new IntentIdentifier(accountIdentifier, currency, amount);
         String encodedIntentIdentifier = intentIdentifier.encode();
 
-        System.out.println("encoded IntentIdentifier: " + encodedIntentIdentifier);
+        System.out.println("~ Encoded IntentIdentifier: " + encodedIntentIdentifier);
 
         return encodedIntentIdentifier;
     }

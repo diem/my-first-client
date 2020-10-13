@@ -22,6 +22,7 @@ public class GetAccountInfoExample {
         //get account information
         Account account = getAccountInfo(accountAddress);
 
+        System.out.println("~ Account info:");
         System.out.println(account);
     }
 

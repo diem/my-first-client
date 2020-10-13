@@ -23,8 +23,9 @@ public class MintExample {
         AuthKey authKey = GenerateKeysExample.generateAuthKey();
 
         //use mint to create new account
-        mint(authKey,"192000000","LBR");
+        mint(authKey, "192000000", "LBR");
     }
+
     public static void mint(AuthKey authKey, String amount, String currencyCode) {
         URI build;
 
@@ -38,7 +39,7 @@ public class MintExample {
             throw new RuntimeException(e);
         }
 
-        System.out.println(build);
+        System.out.println("~ Minting: " + build);
 
         HttpPost post = new HttpPost(build);
         CloseableHttpClient httpClient = HttpClients.createDefault();
