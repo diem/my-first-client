@@ -25,7 +25,7 @@ public class MyFirstClient {
         AuthKey senderAuthKey = GenerateKeysExample.generateAuthKey(senderPrivateKey);
 
         System.out.println("#2 Create account");
-        MintExample.mint(senderAuthKey, "1340000000", CurrencyCode.LBR);
+        MintExample.mint(senderAuthKey, 1340000000, CurrencyCode.LBR);
 
         String senderAccountAddress = GenerateKeysExample.extractAccountAddress(senderAuthKey);
 
@@ -37,14 +37,14 @@ public class MyFirstClient {
         GetEventsExample.subscribe(eventsKey);
 
         System.out.println("#5 Add money to account");
-        MintExample.mint(senderAuthKey, "270000000", CurrencyCode.LBR);
+        MintExample.mint(senderAuthKey, 270000000, CurrencyCode.LBR);
 
         System.out.println("#6 Generate Keys");
         PrivateKey receiverPrivateKey = GenerateKeysExample.generatePrivateKey();
         AuthKey receiverAuthKey = GenerateKeysExample.generateAuthKey(receiverPrivateKey);
 
         System.out.println("#7 Create second account");
-        MintExample.mint(receiverAuthKey, "2560000000", CurrencyCode.LBR);
+        MintExample.mint(receiverAuthKey, 2560000000L, CurrencyCode.LBR);
 
         System.out.println("#8 Generate IntentIdentifier");
         String intentIdentifierString = IntentIdentifierExample.generateIntentIdentifier(receiverAuthKey.accountAddress(), 130000000L, CurrencyCode.LBR);

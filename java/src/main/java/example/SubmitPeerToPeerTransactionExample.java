@@ -23,7 +23,7 @@ public class SubmitPeerToPeerTransactionExample {
         //create sender account
         PrivateKey senderPrivateKey = GenerateKeysExample.generatePrivateKey();
         AuthKey senderAuthKey = GenerateKeysExample.generateAuthKey(senderPrivateKey);
-        MintExample.mint(senderAuthKey, "1340000000", "LBR");
+        MintExample.mint(senderAuthKey, 1340000000, "LBR");
 
         //get sender account sequence number
         String senderAccountAddress = GenerateKeysExample.extractAccountAddress(senderAuthKey);
@@ -31,7 +31,7 @@ public class SubmitPeerToPeerTransactionExample {
 
         //create receiver account
         AuthKey receiverAuthKey = GenerateKeysExample.generateAuthKey();
-        MintExample.mint(senderAuthKey, "10000000", "LBR");
+        MintExample.mint(senderAuthKey, 10000000, "LBR");
 
         submitPeerToPeerTransaction(senderPrivateKey, 130000000L, receiverAuthKey.accountAddress(), senderAuthKey.accountAddress(), account.getSequenceNumber(), CurrencyCode.LBR);
     }

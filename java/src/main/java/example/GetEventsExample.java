@@ -23,7 +23,7 @@ public class GetEventsExample {
     public static void main(String[] args) {
         //create new account
         AuthKey authKey = GenerateKeysExample.generateAuthKey();
-        MintExample.mint(authKey, "110000000", CurrencyCode.LBR);
+        MintExample.mint(authKey, 110000000, CurrencyCode.LBR);
         String accountAddress = GenerateKeysExample.extractAccountAddress(authKey);
         //get account events key
         Account account = GetAccountInfoExample.getAccountInfo(accountAddress);
@@ -74,7 +74,7 @@ public class GetEventsExample {
         Runnable minter = () -> {
             for (int i = 0; i < 10; i++) {
                 int amount = ThreadLocalRandom.current().nextInt(10, 19) * 10000000;
-                MintExample.mint(authKey, String.valueOf(amount), CurrencyCode.LBR);
+                MintExample.mint(authKey, amount, CurrencyCode.LBR);
                 try {
                     Thread.sleep(1_000);
                 } catch (InterruptedException e) {

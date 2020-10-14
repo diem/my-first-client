@@ -16,7 +16,7 @@ public class GetAccountInfoExample {
         //create account
         PrivateKey privateKey = GenerateKeysExample.generatePrivateKey();
         AuthKey authKey = GenerateKeysExample.generateAuthKey(privateKey);
-        MintExample.mint(authKey, "1340000000", CurrencyCode.LBR);
+        MintExample.mint(authKey, 1340000000, CurrencyCode.LBR);
         String accountAddress = GenerateKeysExample.extractAccountAddress(authKey);
 
         //get account information
