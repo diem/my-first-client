@@ -1,12 +1,12 @@
 package example;
 
-import org.libra.AuthKey;
-import org.libra.LibraClient;
-import org.libra.LibraException;
-import org.libra.PrivateKey;
+import org.libra.*;
 import org.libra.jsonrpc.LibraJsonRpcClient;
 import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.utils.CurrencyCode;
+
+import static org.libra.Testnet.CHAIN_ID;
+import static org.libra.Testnet.JSON_RPC_URL;
 
 /**
  * GetAccountInfoExample demonstrates the required operation to retrieve account information from the Libra blockchain
@@ -28,7 +28,7 @@ public class GetAccountInfoExample {
 
     public static Account getAccountInfo(String accountAddress) {
         //Connect to testnet
-        LibraClient client = new LibraJsonRpcClient(Testnet.NET_URL, Testnet.CHAIN_ID);
+        LibraClient client = new LibraJsonRpcClient(JSON_RPC_URL, CHAIN_ID);
 
         try {
             return client.getAccount(accountAddress);

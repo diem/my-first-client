@@ -12,6 +12,9 @@ import org.libra.types.SignedTransaction;
 import org.libra.types.TransactionPayload;
 import org.libra.utils.CurrencyCode;
 
+import static org.libra.Testnet.CHAIN_ID;
+import static org.libra.Testnet.JSON_RPC_URL;
+
 /**
  * SubmitPeerToPeerTransactionExample demonstrates currencies transfer between 2 accounts on the Libra blockchain
  */
@@ -40,7 +43,7 @@ public class SubmitPeerToPeerTransactionExample {
                                                    long sequenceNumber,
                                                    String currencyCode) {
         //Connect to testnet
-        LibraClient client = new LibraJsonRpcClient(Testnet.NET_URL, Testnet.CHAIN_ID);
+        LibraClient client = new LibraJsonRpcClient(JSON_RPC_URL, CHAIN_ID);
         //Create script
         TransactionPayload script = generateScript(receiverAccountAddress, amount, currencyCode);
         //Create transaction
@@ -83,7 +86,7 @@ public class SubmitPeerToPeerTransactionExample {
                 gasUnitPrice,
                 CurrencyCode.LBR,
                 expirationTimestampSecs,
-                Testnet.CHAIN_ID);
+                CHAIN_ID);
     }
 
     private static TransactionPayload generateScript(AccountAddress receiverAccountAddress,

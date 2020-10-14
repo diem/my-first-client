@@ -11,11 +11,14 @@ import org.libra.utils.CurrencyCode;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static org.libra.Testnet.CHAIN_ID;
+import static org.libra.Testnet.JSON_RPC_URL;
+
 /**
  * GetEventsExample demonstrates how to subscribe to a specific events stream base on events key
  */
 public class GetEventsExample {
-    private static final LibraClient client = new LibraJsonRpcClient(Testnet.NET_URL, Testnet.CHAIN_ID);
+    private static final LibraClient client = new LibraJsonRpcClient(JSON_RPC_URL, CHAIN_ID);
 
     public static void main(String[] args) {
         //create new account
