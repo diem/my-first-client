@@ -3,11 +3,13 @@ from random import randrange
 from threading import Thread
 
 from libra import jsonrpc
+from libra.testnet import JSON_RPC_URL
 
-from generate_keys_example import extract_account_address, generate_auth_key
+from generate_keys_example import generate_auth_key
 from get_account_info_example import get_account_info
 from mint_example import mint
-from testnet import JSON_RPC_URL
+
+CURRENCY = "Coin1"
 
 client = jsonrpc.Client(JSON_RPC_URL)
 
@@ -17,11 +19,10 @@ client = jsonrpc.Client(JSON_RPC_URL)
 def main():
     # create new account
     auth_key = generate_auth_key()
-    mint(auth_key.hex(), 110000000, "LBR")
-    account_address = extract_account_address(auth_key)
+    mint(auth_key.hex(), 110000000, CURRENCY)
 
     # get account events key
-    account = get_account_info(account_address)
+    account = get_account_info(auth_key.account_address())
     events_key = account.received_events_key
 
     # start minter to demonstrates events creation
@@ -48,7 +49,7 @@ def subscribe_(events_key):
 def minter(auth_key):
     for x in range(0, 10):
         amount = randrange(10, 19) * 10000000
-        mint(auth_key.hex(), amount, "LBR")
+        mint(auth_key.hex(), amount, CURRENCY)
         time.sleep(1)
 
 

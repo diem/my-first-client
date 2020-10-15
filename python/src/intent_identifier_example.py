@@ -11,7 +11,7 @@ from generate_keys_example import generate_auth_key
 def main():
     # create intent identifier
     auth_key = generate_auth_key()
-    intent_identifier = generate_intent_identifier(auth_key.account_address(), 130000000, "LBR")
+    intent_identifier = generate_intent_identifier(auth_key.account_address(), 130000000, "Coin1")
 
     # deserialize IntentIdentifier
     intent_identifier = decode_intent(intent_identifier)

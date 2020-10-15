@@ -1,7 +1,7 @@
-import requests
+from libra import jsonrpc, testnet
+from libra.testnet import Faucet, JSON_RPC_URL
 
 from generate_keys_example import generate_auth_key
-from testnet import FAUCET_URL
 
 """
  mint_example demonstrates how to add currencies to account on the Libra blockchain
@@ -13,23 +13,14 @@ def main():
     auth_key = generate_auth_key()
 
     # use mint to create new account
-    mint(auth_key.hex(), 192000000, "LBR")
+    mint(auth_key.hex(), 192000000, "Coin1")
 
 
-def mint(authkey: str, amount: int, currency_code: str) -> int:
-    session = requests.Session()
-    response = session.post(
-        FAUCET_URL,
-        params={
-            "amount": amount,
-            "auth_key": authkey,
-            "currency_code": currency_code,
-        },
-    )
+def mint(auth_key: str, amount: int, currency_code: str) -> None:
+    client = jsonrpc.Client(JSON_RPC_URL)
+    faucet = testnet.Faucet(client)
 
-    response.raise_for_status()
-
-    return int(response.text)
+    return Faucet.mint(faucet, auth_key, amount, currency_code)
 
 
 if __name__ == "__main__":

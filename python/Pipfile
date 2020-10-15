@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-pylibra-beta = "*"
+libra-client-sdk = "*"
 
 [requires]
 python_version = "3.7"
