@@ -6,6 +6,9 @@ import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.utils.CurrencyCode;
 
 public class MyFirstClient {
+    //the default currency on testnet
+    public static final String CURRENCY_CODE = "Coin1";
+
     /**
      * This code demonstrates basic flow for working with the LibraClient.
      * 1. Generate keys
@@ -25,29 +28,27 @@ public class MyFirstClient {
         AuthKey senderAuthKey = GenerateKeysExample.generateAuthKey(senderPrivateKey);
 
         System.out.println("#2 Create account");
-        MintExample.mint(senderAuthKey, 1340000000, CurrencyCode.LBR);
-
-        String senderAccountAddress = GenerateKeysExample.extractAccountAddress(senderAuthKey);
+        MintExample.mint(senderAuthKey, 1340000000, CURRENCY_CODE);
 
         System.out.println("#3 Get account information");
-        Account senderAccount = GetAccountInfoExample.getAccountInfo(senderAccountAddress);
+        Account senderAccount = GetAccountInfoExample.getAccountInfo(senderAuthKey.accountAddress());
 
         String eventsKey = senderAccount.getReceivedEventsKey();
         System.out.println("#4 Subscribe to events stream");
         GetEventsExample.subscribe(eventsKey);
 
         System.out.println("#5 Add money to account");
-        MintExample.mint(senderAuthKey, 270000000, CurrencyCode.LBR);
+        MintExample.mint(senderAuthKey, 270000000, CURRENCY_CODE);
 
         System.out.println("#6 Generate Keys");
         PrivateKey receiverPrivateKey = GenerateKeysExample.generatePrivateKey();
         AuthKey receiverAuthKey = GenerateKeysExample.generateAuthKey(receiverPrivateKey);
 
         System.out.println("#7 Create second account");
-        MintExample.mint(receiverAuthKey, 2560000000L, CurrencyCode.LBR);
+        MintExample.mint(receiverAuthKey, 2560000000L, CURRENCY_CODE);
 
         System.out.println("#8 Generate IntentIdentifier");
-        String intentIdentifierString = IntentIdentifierExample.generateIntentIdentifier(receiverAuthKey.accountAddress(), 130000000L, CurrencyCode.LBR);
+        String intentIdentifierString = IntentIdentifierExample.generateIntentIdentifier(receiverAuthKey.accountAddress(), 130000000L, CURRENCY_CODE);
 
         System.out.println("#9 Deserialize IntentIdentifier");
         IntentIdentifier intentIdentifier = IntentIdentifierExample.decodeIntentIdentifier(intentIdentifierString);
