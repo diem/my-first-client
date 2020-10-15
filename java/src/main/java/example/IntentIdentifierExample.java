@@ -19,7 +19,7 @@ public class IntentIdentifierExample {
         //create IntentIdentifier
         PrivateKey privateKey = GenerateKeysExample.generatePrivateKey();
         AuthKey authKey = GenerateKeysExample.generateAuthKey(privateKey);
-        String intentIdentifierString = generateIntentIdentifier(authKey.accountAddress(), 130000000L, CurrencyCode.LBR);
+        String intentIdentifierString = generateIntentIdentifier(authKey.accountAddress(), 130000000L, "Coin1");
 
         //deserialize IntentIdentifier
         IntentIdentifier intentIdentifier = decodeIntentIdentifier(intentIdentifierString);

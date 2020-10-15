@@ -5,6 +5,7 @@ import org.libra.AuthKey;
 import org.libra.Ed25519PrivateKey;
 import org.libra.PrivateKey;
 import org.libra.types.AccountAddress;
+import org.libra.utils.AccountAddressUtils;
 import org.libra.utils.Hex;
 
 import java.security.SecureRandom;
@@ -31,7 +32,7 @@ public class GenerateKeysExample {
 
     public static AuthKey generateAuthKey(PrivateKey privateKey) {
         AuthKey authKey = AuthKey.ed24419(privateKey.publicKey());
-        String accountAddress = extractAccountAddress(authKey);
+        String accountAddress = AccountAddressUtils.hex(authKey.accountAddress());
 
         System.out.println("~ Generated address: " + accountAddress);
 
@@ -42,11 +43,5 @@ public class GenerateKeysExample {
         PrivateKey privateKey = generatePrivateKey();
 
         return generateAuthKey(privateKey);
-    }
-
-    public static String extractAccountAddress(AuthKey authKey) {
-        AccountAddress accountAddress = authKey.accountAddress();
-
-        return Hex.encode(accountAddress.value);
     }
 }

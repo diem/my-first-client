@@ -3,6 +3,7 @@ package example;
 import org.libra.*;
 import org.libra.jsonrpc.LibraJsonRpcClient;
 import org.libra.jsonrpctypes.JsonRpc.Account;
+import org.libra.types.AccountAddress;
 import org.libra.utils.CurrencyCode;
 
 import static org.libra.Testnet.CHAIN_ID;
@@ -16,17 +17,16 @@ public class GetAccountInfoExample {
         //create account
         PrivateKey privateKey = GenerateKeysExample.generatePrivateKey();
         AuthKey authKey = GenerateKeysExample.generateAuthKey(privateKey);
-        MintExample.mint(authKey, 1340000000, CurrencyCode.LBR);
-        String accountAddress = GenerateKeysExample.extractAccountAddress(authKey);
+        MintExample.mint(authKey, 1340000000, "Coin1");
 
         //get account information
-        Account account = getAccountInfo(accountAddress);
+        Account account = getAccountInfo(authKey.accountAddress());
 
         System.out.println("~ Account info:");
         System.out.println(account);
     }
 
-    public static Account getAccountInfo(String accountAddress) {
+    public static Account getAccountInfo(AccountAddress accountAddress) {
         //Connect to testnet
         LibraClient client = new LibraJsonRpcClient(JSON_RPC_URL, CHAIN_ID);
 
