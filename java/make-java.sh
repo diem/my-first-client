@@ -6,11 +6,11 @@ GREEN='\033[0;32m'
 NC='\033[0m'
 NL="\n"
 
-gradle shadowJar
+gradle shadowJar || exit
 
-printf "${NL}${GREEN}Build Done!${NC} jar could be found at <current-dir>\java\build\lib${NL}"
+printf "${NL}${GREEN}Build Done!${NC} jar could be found at ${PWD}/build/libs${NL}"
 
-cd build/libs/ || exit
+cd build/libs/
 printf "moved to: ${PWD}${NL}"
 
 printf "${RED}Execute java examples:${NC}${NL}"
