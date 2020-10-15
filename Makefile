@@ -1,9 +1,9 @@
-.PHONY: ajava python typescript
+.PHONY: java python typescript
 
 help:
-	@echo "HELP!!!!"
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-ajava:
+java: ## Build and execute all the Java code examples
 ifeq ($(shell java -version 2>&1 | grep "1.8" >/dev/null; printf $$?),0)
 	@echo "Found version"
 else
@@ -12,7 +12,7 @@ endif
 
 	cd java/; ./make-java.sh
 
-python:
+python: ## Install and execute all the Python examples
 ifeq ($(shell python -V 2>&1 | grep "3.7.7" >/dev/null; printf $$?),0)
 	echo "Found version"
 else
