@@ -2,10 +2,11 @@ package example;
 
 import org.libra.AuthKey;
 import org.libra.LibraClient;
+import org.libra.Testnet;
 import org.libra.jsonrpc.LibraJsonRpcClient;
 
-import static org.libra.Testnet.*;
 import static org.libra.Testnet.CHAIN_ID;
+import static org.libra.Testnet.JSON_RPC_URL;
 
 /**
  * MintExample demonstrates how to add currencies to account on the Libra blockchain
@@ -22,6 +23,6 @@ public class MintExample {
     public static void mint(AuthKey authKey, long amount, String currencyCode) {
         LibraClient client = new LibraJsonRpcClient(JSON_RPC_URL, CHAIN_ID);
 
-        mintCoins(client, amount, authKey.hex(), currencyCode);
+        Testnet.mintCoins(client, amount, authKey.hex(), currencyCode);
     }
 }
