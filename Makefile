@@ -13,12 +13,14 @@ endif
 	cd java/; ./make-java.sh
 
 python: ## Install and execute all the Python examples
+# verify python version
 ifeq ($(shell python -V 2>&1 | grep "3.7.7" >/dev/null; printf $$?),0)
-	echo "Found version"
+	echo "Found correct python version"
 else
 	$(error "Could not find correct python version, please install 3.7.7")
 endif
 
+# verify pipenv existence
 ifeq (, $(shell which pipenv))
 	$(error "Please install pipenv")
 endif
