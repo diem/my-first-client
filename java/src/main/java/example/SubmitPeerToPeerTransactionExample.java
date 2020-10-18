@@ -3,6 +3,7 @@ package example;
 import com.novi.serde.Bytes;
 import org.libra.*;
 import org.libra.jsonrpc.LibraJsonRpcClient;
+import org.libra.jsonrpctypes.JsonRpc;
 import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.jsonrpctypes.JsonRpc.Transaction;
 import org.libra.stdlib.Helpers;
@@ -25,12 +26,12 @@ public class SubmitPeerToPeerTransactionExample {
         AuthKey senderAuthKey = GenerateKeysExample.generateAuthKey(senderPrivateKey);
         MintExample.mint(senderAuthKey, 1340000000, "Coin1");
 
-        //get sender account sequence number
+        //get sender account for sequence number
         Account account = GetAccountInfoExample.getAccountInfo(senderAuthKey.accountAddress());
 
         //create receiver account
         AuthKey receiverAuthKey = GenerateKeysExample.generateAuthKey();
-        MintExample.mint(senderAuthKey, 100000000, "Coin1");
+        MintExample.mint(receiverAuthKey, 120000000, "Coin1");
 
         submitPeerToPeerTransaction(
                 senderPrivateKey,
