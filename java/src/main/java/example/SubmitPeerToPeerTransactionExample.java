@@ -30,9 +30,15 @@ public class SubmitPeerToPeerTransactionExample {
 
         //create receiver account
         AuthKey receiverAuthKey = GenerateKeysExample.generateAuthKey();
-        MintExample.mint(senderAuthKey, 10000000, "Coin1");
+        MintExample.mint(senderAuthKey, 100000000, "Coin1");
 
-        submitPeerToPeerTransaction(senderPrivateKey, 130000000L, receiverAuthKey.accountAddress(), senderAuthKey.accountAddress(), account.getSequenceNumber(), "Coin1");
+        submitPeerToPeerTransaction(
+                senderPrivateKey,
+                130000000L,
+                receiverAuthKey.accountAddress(),
+                senderAuthKey.accountAddress(),
+                account.getSequenceNumber(),
+                "Coin1");
     }
 
     public static void submitPeerToPeerTransaction(PrivateKey privateKey,
