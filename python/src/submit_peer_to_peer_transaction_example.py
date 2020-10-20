@@ -1,13 +1,13 @@
 import time
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
-from libra import jsonrpc, stdlib, utils, libra_types
+from libra import stdlib, utils, libra_types, testnet
 from libra.libra_types import AccountAddress
-from libra.testnet import JSON_RPC_URL, CHAIN_ID
+from libra.testnet import CHAIN_ID
 
-from generate_keys_example import generate_private_key, generate_auth_key
-from get_account_info_example import get_account_info
-from mint_example import mint
+import generate_keys_example
+import get_account_example
+import mint_example
 
 CURRENCY = "Coin1"
 
@@ -17,19 +17,22 @@ submit_peer_to_peer_transaction_example demonstrates currencies transfer between
 
 
 def main():
+    # connect to testnet
+    client = testnet.create_client()
     # create sender account
-    sender_private_key = generate_private_key()
-    sender_auth_key = generate_auth_key(sender_private_key)
-    mint(sender_auth_key.hex(), 1340000000, CURRENCY)
+    sender_private_key = generate_keys_example.generate_private_key()
+    sender_auth_key = generate_keys_example.generate_auth_key(sender_private_key)
+    mint_example.mint(sender_auth_key.hex(), 1340000000, CURRENCY)
 
     # get sender account
-    sender_account = get_account_info(sender_auth_key.account_address())
+    sender_account = get_account_example.get_account(sender_auth_key.account_address())
 
     # create receiver account
-    receiver_auth_key = generate_auth_key()
-    mint(receiver_auth_key.hex(), 10000000, CURRENCY)
+    receiver_auth_key = generate_keys_example.generate_auth_key()
+    mint_example.mint(receiver_auth_key.hex(), 10000000, CURRENCY)
 
-    submit_peer_to_peer_transaction(sender_private_key,
+    submit_peer_to_peer_transaction(client,
+                                    sender_private_key,
                                     130000000,
                                     receiver_auth_key.account_address(),
                                     sender_auth_key.account_address(),
@@ -37,14 +40,13 @@ def main():
                                     CURRENCY)
 
 
-def submit_peer_to_peer_transaction(private_key: Ed25519PrivateKey,
+def submit_peer_to_peer_transaction(client,
+                                    private_key: Ed25519PrivateKey,
                                     amount,
                                     receiver_account_address: AccountAddress,
                                     sender_account_address: AccountAddress,
                                     sequence_number,
                                     currency: str):
-    # connect to testnet
-    client = jsonrpc.Client(JSON_RPC_URL)
     # create script
     script = stdlib.encode_peer_to_peer_with_metadata_script(
         currency=utils.currency_code(currency),

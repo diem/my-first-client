@@ -3,22 +3,22 @@ from libra import identifier, utils
 from libra.identifier import decode_intent
 from libra.libra_types import AccountAddress
 
-from generate_keys_example import generate_auth_key
+import generate_keys_example
 
 """ intent_identifier_example demonstrates the IntentIdentifier generation and deserialization """
 
 
 def main():
     # create intent identifier
-    auth_key = generate_auth_key()
+    auth_key = generate_keys_example.generate_auth_key()
     intent_identifier = generate_intent_identifier(auth_key.account_address(), 130000000, "Coin1")
 
     # deserialize IntentIdentifier
     intent_identifier = decode_intent(intent_identifier)
 
-    print(f"~ Account (HEX) from intent: ${utils.account_address_hex(intent_identifier.account_address)}")
-    print(f"~ Amount from intent: ${intent_identifier.amount}")
-    print(f"~ Currency from intent: ${intent_identifier.currency_code}")
+    print(f"~ Account (HEX) from intent: {utils.account_address_hex(intent_identifier.account_address)}")
+    print(f"~ Amount from intent: {intent_identifier.amount}")
+    print(f"~ Currency from intent: {intent_identifier.currency_code}")
 
 
 def generate_intent_identifier(address: AccountAddress, amount: int, currency: str) -> str:
