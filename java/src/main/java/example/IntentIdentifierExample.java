@@ -15,11 +15,13 @@ import static org.libra.IntentIdentifier.decode;
  * IntentIdentifierExample demonstrates the IntentIdentifier generation and deserialization
  */
 public class IntentIdentifierExample {
+    public static final String CURRENCY = "Coin1";
+
     public static void main(String[] args) {
         //create IntentIdentifier
         PrivateKey privateKey = GenerateKeysExample.generatePrivateKey();
         AuthKey authKey = GenerateKeysExample.generateAuthKey(privateKey);
-        String intentIdentifierString = generateIntentIdentifier(authKey.accountAddress(), 130000000L, "Coin1");
+        String intentIdentifierString = generateIntentIdentifier(authKey.accountAddress(), 130000000L, CURRENCY);
 
         //deserialize IntentIdentifier
         IntentIdentifier intentIdentifier = decodeIntentIdentifier(intentIdentifierString);

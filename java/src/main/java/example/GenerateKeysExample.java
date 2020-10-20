@@ -4,7 +4,6 @@ import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
 import org.libra.AuthKey;
 import org.libra.Ed25519PrivateKey;
 import org.libra.PrivateKey;
-import org.libra.types.AccountAddress;
 import org.libra.utils.AccountAddressUtils;
 import org.libra.utils.Hex;
 

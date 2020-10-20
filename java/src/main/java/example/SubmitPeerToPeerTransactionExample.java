@@ -2,8 +2,6 @@ package example;
 
 import com.novi.serde.Bytes;
 import org.libra.*;
-import org.libra.jsonrpc.LibraJsonRpcClient;
-import org.libra.jsonrpctypes.JsonRpc;
 import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.jsonrpctypes.JsonRpc.Transaction;
 import org.libra.stdlib.Helpers;
@@ -14,42 +12,45 @@ import org.libra.types.TransactionPayload;
 import org.libra.utils.CurrencyCode;
 
 import static org.libra.Testnet.CHAIN_ID;
-import static org.libra.Testnet.JSON_RPC_URL;
 
 /**
  * SubmitPeerToPeerTransactionExample demonstrates currencies transfer between 2 accounts on the Libra blockchain
  */
 public class SubmitPeerToPeerTransactionExample {
+    public static final String CURRENCY_CODE = "Coin1";
+
     public static void main(String[] args) {
+        //connect to testnet
+        LibraClient client = Testnet.createClient();
+
         //create sender account
         PrivateKey senderPrivateKey = GenerateKeysExample.generatePrivateKey();
         AuthKey senderAuthKey = GenerateKeysExample.generateAuthKey(senderPrivateKey);
-        MintExample.mint(senderAuthKey, 1340000000, "Coin1");
+        MintExample.mint(client, senderAuthKey, 1340000000, CURRENCY_CODE);
 
         //get sender account for sequence number
-        Account account = GetAccountInfoExample.getAccountInfo(senderAuthKey.accountAddress());
+        Account account = GetAccountInfoExample.getAccountInfo(client, senderAuthKey.accountAddress());
 
         //create receiver account
         AuthKey receiverAuthKey = GenerateKeysExample.generateAuthKey();
-        MintExample.mint(receiverAuthKey, 120000000, "Coin1");
+        MintExample.mint(client, receiverAuthKey, 120000000, CURRENCY_CODE);
 
-        submitPeerToPeerTransaction(
+        submitPeerToPeerTransaction(client,
                 senderPrivateKey,
                 130000000L,
                 receiverAuthKey.accountAddress(),
                 senderAuthKey.accountAddress(),
                 account.getSequenceNumber(),
-                "Coin1");
+                CURRENCY_CODE);
     }
 
-    public static void submitPeerToPeerTransaction(PrivateKey privateKey,
+    public static void submitPeerToPeerTransaction(LibraClient client,
+                                                   PrivateKey privateKey,
                                                    long amount,
                                                    AccountAddress receiverAccountAddress,
                                                    AccountAddress senderAccountAddress,
                                                    long sequenceNumber,
                                                    String currencyCode) {
-        //Connect to testnet
-        LibraClient client = new LibraJsonRpcClient(JSON_RPC_URL, CHAIN_ID);
         //Create script
         TransactionPayload script = new TransactionPayload.Script(
                 Helpers.encode_peer_to_peer_with_metadata_script(
@@ -65,7 +66,7 @@ public class SubmitPeerToPeerTransactionExample {
                 script,
                 1000000L,
                 0L,
-                "Coin1",
+                CURRENCY_CODE,
                 (System.currentTimeMillis() / 1000) + 300,
                 CHAIN_ID);
         //Sign transaction

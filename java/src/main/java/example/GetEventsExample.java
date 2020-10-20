@@ -3,39 +3,39 @@ package example;
 import org.libra.AuthKey;
 import org.libra.LibraClient;
 import org.libra.LibraException;
-import org.libra.jsonrpc.LibraJsonRpcClient;
+import org.libra.Testnet;
 import org.libra.jsonrpctypes.JsonRpc.Account;
 import org.libra.jsonrpctypes.JsonRpc.Event;
-import org.libra.utils.CurrencyCode;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static org.libra.Testnet.CHAIN_ID;
-import static org.libra.Testnet.JSON_RPC_URL;
 
 /**
  * GetEventsExample demonstrates how to subscribe to a specific events stream base on events key
  */
 public class GetEventsExample {
-    private static final LibraClient client = new LibraJsonRpcClient(JSON_RPC_URL, CHAIN_ID);
+    public static final String CURRENCY_CODE = "Coin1";
 
     public static void main(String[] args) {
+        //connect to testnet
+        LibraClient client = Testnet.createClient();
+
         //create new account
         AuthKey authKey = GenerateKeysExample.generateAuthKey();
-        MintExample.mint(authKey, 110000000, "Coin1");
+        MintExample.mint(client, authKey, 110000000, CURRENCY_CODE);
+
         //get account events key
-        Account account = GetAccountInfoExample.getAccountInfo(authKey.accountAddress());
+        Account account = GetAccountInfoExample.getAccountInfo(client, authKey.accountAddress());
         String eventsKey = account.getReceivedEventsKey();
 
         //start minter to demonstrates events creation
-        startMinter(authKey);
+        startMinter(client, authKey);
 
         //demonstrates events subscription
-        subscribe(eventsKey);
+        subscribe(client, eventsKey);
     }
 
-    public static void subscribe(String eventsKey) {
+    public static void subscribe(LibraClient client, String eventsKey) {
         Runnable listener = () -> {
             long start = 0;
 
@@ -69,11 +69,11 @@ public class GetEventsExample {
         listenerThread.start();
     }
 
-    private static void startMinter(AuthKey authKey) {
+    private static void startMinter(LibraClient client, AuthKey authKey) {
         Runnable minter = () -> {
             for (int i = 0; i < 10; i++) {
                 int amount = ThreadLocalRandom.current().nextInt(10, 19) * 10000000;
-                MintExample.mint(authKey, amount, "Coin1");
+                MintExample.mint(client, authKey, amount, CURRENCY_CODE);
                 try {
                     Thread.sleep(1_000);
                 } catch (InterruptedException e) {
