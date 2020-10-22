@@ -79,9 +79,9 @@ public class MyFirstClient {
         //Create script
         TransactionPayload script = new TransactionPayload.Script(
                 Helpers.encode_peer_to_peer_with_metadata_script(
-                        CurrencyCode.typeTag(CURRENCY_CODE),
-                        receiverAuthKey.accountAddress(),
-                        130000000L,
+                        CurrencyCode.typeTag(decodedIntentIdentifier.getCurrency()),
+                        decodedIntentIdentifier.getAccountIdentifier().getAccountAddress(),
+                        decodedIntentIdentifier.getAmount(),
                         new Bytes(new byte[0]),
                         new Bytes(new byte[0])));
         //Create transaction
