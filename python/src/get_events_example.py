@@ -2,11 +2,8 @@ import time
 from random import randrange
 from threading import Thread
 
-from libra import testnet
-
-import generate_keys_example
-import get_account_example
-import mint_example
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from libra import testnet, AuthKey, utils
 
 CURRENCY = "Coin1"
 
@@ -17,12 +14,17 @@ def main():
     # connect to testnet
     client = testnet.create_client()
 
+    # generate private key
+    private_key = Ed25519PrivateKey.generate()
+    # generate auth key
+    auth_key = AuthKey.from_public_key(private_key.public_key())
+    print(f"~ Generated address: {utils.account_address_hex(auth_key.account_address())}")
     # create new account
-    auth_key = generate_keys_example.generate_auth_key()
-    mint_example.mint(auth_key.hex(), 110000000, CURRENCY)
+    faucet = testnet.Faucet(client)
+    testnet.Faucet.mint(faucet, auth_key.hex(), 110000000, CURRENCY)
 
     # get account events key
-    account = get_account_example.get_account(client, auth_key.account_address())
+    account = client.get_account(auth_key.account_address())
     events_key = account.received_events_key
 
     # start minter to demonstrates events creation
@@ -49,7 +51,8 @@ def subscribe_(client, events_key):
 def minter(client, auth_key):
     for x in range(0, 10):
         amount = randrange(10, 19) * 10000000
-        mint_example.mint(client, auth_key.hex(), amount, CURRENCY)
+        faucet = testnet.Faucet(client)
+        testnet.Faucet.mint(faucet, auth_key.hex(), amount, CURRENCY)
         time.sleep(1)
 
 

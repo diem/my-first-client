@@ -109,11 +109,11 @@
         },
         "libra-client-sdk": {
             "hashes": [
-                "sha256:b01dd5983fcac6b10eb017c704cc080b798cbbf47aa9f507262623652aa98b15",
-                "sha256:e5cf07a4712403a676495d921415ecf389073188da0c12e5b5bb7b72e986fb28"
+                "sha256:1fced63c230aeff6e44d1d19737da74a58a3632d0dab33812eac0a5006d52e89",
+                "sha256:814128647c497aaeb16bd9769384f157c1ea5f7c308b0873d286402db0e8fa1b"
             ],
             "index": "pypi",
-            "version": "==0.5.2020100601"
+            "version": "==0.6.2020101601"
         },
         "numpy": {
             "hashes": [
@@ -191,16 +191,16 @@
                 "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259",
                 "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==1.15.0"
         },
         "urllib3": {
             "hashes": [
-                "sha256:91056c15fa70756691db97756772bb1eb9678fa585d9184f24534b100dc60f4a",
-                "sha256:e7983572181f5e1522d9c98453462384ee92a0be7fac5f1413a1e35c56cc0461"
+                "sha256:8d7eaa5a82a1cac232164990f04874c594c9453ec55eef02eab885aa02fc17a2",
+                "sha256:f5321fbe4bf3fefa0efd0bfe7fb14e90909eb62a48ccda331726b4319897dd5e"
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'",
-            "version": "==1.25.10"
+            "version": "==1.25.11"
         }
     },
     "develop": {}

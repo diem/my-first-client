@@ -12,61 +12,96 @@
  10. Deserialize IntentIdentifier
  11. Transfer money between accounts (peer to peer transaction)
 """
-from libra import AuthKey, testnet
+import time
 
-import generate_keys_example
-import get_account_example
+import libra
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from libra import AuthKey, testnet, identifier, utils, libra_types, stdlib
+from libra.testnet import CHAIN_ID
+
 import get_events_example
-import intent_identifier_example
-import mint_example
-import submit_peer_to_peer_transaction_example
-from mint_example import mint
 
 CURRENCY = "Coin1"
 
 
 def main():
-    print("#1 Generate Keys")
+    print("#1 connect to testnet")
     client = testnet.create_client();
 
     print("#2 Generate Keys")
-    sender_private_key = generate_keys_example.generate_private_key()
-    sender_auth_key: AuthKey = generate_keys_example.generate_auth_key(sender_private_key)
+    # generate private key for sender account
+    sender_private_key = Ed25519PrivateKey.generate()
+    # generate auth key for sender account
+    sender_auth_key = AuthKey.from_public_key(sender_private_key.public_key())
+    print(f"~ Generated sender address: {utils.account_address_hex(sender_auth_key.account_address())}")
 
     print("#3 Create account")
-    mint_example.mint(client, sender_auth_key.hex(), 1340000000, CURRENCY)
+    faucet = testnet.Faucet(client)
+    testnet.Faucet.mint(faucet, sender_auth_key.hex(), 1340000000, CURRENCY)
 
     print("#4 Get account information")
-    sender_account = get_account_example.get_account(client, sender_auth_key.account_address())
+    sender_account = client.get_account(sender_auth_key.account_address())
 
     events_key = sender_account.received_events_key
     print("#5 Start event listener")
     get_events_example.subscribe(client, events_key)
 
     print("#6 Add money to account")
-    mint_example.mint(client, sender_auth_key.hex(), 270000000, CURRENCY)
+    faucet = testnet.Faucet(client)
+    testnet.Faucet.mint(faucet, sender_auth_key.hex(), 270000000, CURRENCY)
 
     print("#7 Generate Keys")
-    receiver_auth_key: AuthKey = generate_keys_example.generate_auth_key()
+    # generate private key for receiver account
+    receiver_private_key = Ed25519PrivateKey.generate()
+    # generate auth key for receiver account
+    receiver_auth_key = AuthKey.from_public_key(receiver_private_key.public_key())
+    print(f"~ Generated receiver address: {utils.account_address_hex(receiver_auth_key.account_address())}")
 
     print("#8 Create second account")
-    mint(client, receiver_auth_key.hex(), 2560000000, CURRENCY)
+    faucet = testnet.Faucet(client)
+    testnet.Faucet.mint(faucet, receiver_auth_key.hex(), 2560000000, CURRENCY)
 
     print("#9 Generate IntentIdentifier")
-    encoded_intent_identifier = intent_identifier_example.generate_intent_identifier(
-        receiver_auth_key.account_address(), 130000000, CURRENCY)
+    account_identifier = identifier.encode_account(utils.account_address_hex(receiver_auth_key.account_address()), None,
+                                                   identifier.TLB)
+    encoded_intent_identifier = identifier.encode_intent(account_identifier, CURRENCY, 130000000)
+    print(f"~ Encoded IntentIdentifier: {encoded_intent_identifier}")
 
     print("#10 Deserialize IntentIdentifier")
-    intent_identifier = intent_identifier_example.decode_intent(encoded_intent_identifier)
+    intent_identifier = libra.identifier.decode_intent(encoded_intent_identifier, identifier.TLB)
+    print(f"~ Account (HEX) from intent: {utils.account_address_hex(intent_identifier.account_address)}")
+    print(f"~ Amount from intent: {intent_identifier.amount}")
+    print(f"~ Currency from intent: {intent_identifier.currency_code}")
 
     print("#11 Peer 2 peer transaction")
-    submit_peer_to_peer_transaction_example.submit_peer_to_peer_transaction(client,
-                                                                            sender_private_key,
-                                                                            intent_identifier.amount,
-                                                                            receiver_auth_key.account_address(),
-                                                                            sender_auth_key.account_address(),
-                                                                            sender_account.sequence_number,
-                                                                            CURRENCY)
+    # create script
+    script = stdlib.encode_peer_to_peer_with_metadata_script(
+        currency=utils.currency_code(intent_identifier.currency_code),
+        payee=intent_identifier.account_address,
+        amount=intent_identifier.amount,
+        metadata=b'',  # no requirement for metadata and metadata signature
+        metadata_signature=b'',
+    )
+    # create transaction
+    raw_transaction = libra_types.RawTransaction(
+        sender=sender_auth_key.account_address(),
+        sequence_number=sender_account.sequence_number,
+        payload=libra_types.TransactionPayload__Script(script),
+        max_gas_amount=1_000_000,
+        gas_unit_price=0,
+        gas_currency_code=CURRENCY,
+        expiration_timestamp_secs=int(time.time()) + 30,
+        chain_id=CHAIN_ID,
+    )
+    # sign transaction
+    signature = sender_private_key.sign(utils.raw_transaction_signing_msg(raw_transaction))
+    public_key_bytes = utils.public_key_bytes(sender_private_key.public_key())
+
+    signed_txn = utils.create_signed_transaction(raw_transaction, public_key_bytes, signature)
+    # submit transaction
+    client.submit(signed_txn)
+    # wait for transaction
+    client.wait_for_transaction(signed_txn)
 
 
 if __name__ == "__main__":
