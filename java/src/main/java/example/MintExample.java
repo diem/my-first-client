@@ -1,8 +1,10 @@
 package example;
 
-import org.libra.AuthKey;
-import org.libra.LibraClient;
-import org.libra.Testnet;
+import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
+import org.libra.*;
+import org.libra.utils.AccountAddressUtils;
+
+import java.security.SecureRandom;
 
 /**
  * MintExample demonstrates how to add currencies to account on the Libra blockchain
@@ -15,13 +17,15 @@ public class MintExample {
         //connect to testnet
         LibraClient client = Testnet.createClient();
 
-        AuthKey authKey = GenerateKeysExample.generateAuthKey();
+        //generate private key for new account
+        PrivateKey privateKey = new Ed25519PrivateKey(new Ed25519PrivateKeyParameters(new SecureRandom()));
+        //generate auth key for new account
+        AuthKey authKey = AuthKey.ed24419(privateKey.publicKey());
+        String accountAddress = AccountAddressUtils.hex(authKey.accountAddress());
+
+        System.out.println("~ Generated address: " + accountAddress);
 
         //use mint to create new account
-        mint(client, authKey, 192000000, CURRENCY_CODE);
-    }
-
-    public static void mint(LibraClient client, AuthKey authKey, long amount, String currencyCode) {
-        Testnet.mintCoins(client, amount, authKey.hex(), currencyCode);
+        Testnet.mintCoins(client, 192000000, authKey.hex(), CURRENCY_CODE);
     }
 }

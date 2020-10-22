@@ -3,7 +3,6 @@ package example;
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
 import org.libra.AuthKey;
 import org.libra.Ed25519PrivateKey;
-import org.libra.PrivateKey;
 import org.libra.utils.AccountAddressUtils;
 import org.libra.utils.Hex;
 
@@ -14,33 +13,17 @@ import java.security.SecureRandom;
  */
 public class GenerateKeysExample {
     public static void main(String[] args) {
-        PrivateKey privateKey = generatePrivateKey();
-
-        AuthKey authKey = generateAuthKey(privateKey);
-
-        System.out.println("~ Auth Key (HEX): " + authKey.hex());
-        System.out.println("~ Public key (HEX): " + Hex.encode(privateKey.publicKey()));
-    }
-
-    public static PrivateKey generatePrivateKey() {
+        //generate private key
         SecureRandom random = new SecureRandom();
         Ed25519PrivateKeyParameters privateKeyParams = new Ed25519PrivateKeyParameters(random);
+        Ed25519PrivateKey privateKey = new Ed25519PrivateKey(privateKeyParams);
 
-        return new Ed25519PrivateKey(privateKeyParams);
-    }
-
-    public static AuthKey generateAuthKey(PrivateKey privateKey) {
+        //generate auth key
         AuthKey authKey = AuthKey.ed24419(privateKey.publicKey());
         String accountAddress = AccountAddressUtils.hex(authKey.accountAddress());
 
         System.out.println("~ Generated address: " + accountAddress);
-
-        return authKey;
-    }
-
-    public static AuthKey generateAuthKey() {
-        PrivateKey privateKey = generatePrivateKey();
-
-        return generateAuthKey(privateKey);
+        System.out.println("~ Auth Key (HEX): " + authKey.hex());
+        System.out.println("~ Public key (HEX): " + Hex.encode(privateKey.publicKey()));
     }
 }
