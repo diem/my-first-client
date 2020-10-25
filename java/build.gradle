@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:5.2.0"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+sourceSets {
+    main.java.srcDirs = ['src/main/java']
+}
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'MyFirstClient'
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+dependencies {
+    implementation 'org.libra:libra-client-sdk-java:0.0.3'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.66'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.10'
+    implementation 'com.google.protobuf:protobuf-java:3.13.0'
+}
