@@ -9,7 +9,7 @@ NL="\n"
 pipenv install
 printf "${NL}${GREEN}Installation Done!${NC}${NL}"
 
-printf "${RED}Execute java examples:${NC}${NL}"
+printf "${RED}Execute python examples:${NC}${NL}"
 
 printf "${PURPLE}Generate keys example:${NC}${NL}"
 printf "execute: pipenv run python src/generate_keys_example.py${NL}"
