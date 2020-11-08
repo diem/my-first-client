@@ -8,7 +8,7 @@ NL="\n"
 
 npm install || exit
 printf "${NL}${GREEN}Installation Done!${NC}${NL}"
-#printf "Hello, %s\n" "$NAME"
+
 printf "${RED}Execute typescript examples:${NC}${NL}"
 
 printf "${PURPLE}Generate keys example:${NC}${NL}"
