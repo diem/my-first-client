@@ -6,7 +6,7 @@ GREEN='\033[0;32m'
 NC='\033[0m'
 NL="\n"
 
-pipenv install
+pipenv install || exit
 printf "${NL}${GREEN}Installation Done!${NC}${NL}"
 
 printf "${RED}Execute python examples:${NC}${NL}"

@@ -3,7 +3,7 @@
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-all: java python
+all: java python typescript
 
 java: ## Build and execute all the Java code samples
 # verify java version is 1.8
@@ -22,7 +22,7 @@ endif
 python: ## Install and execute all the Python examples
 # verify python version
 ifeq ($(shell python -V 2>&1 | grep "3.7.*" >/dev/null; printf $$?),0)
-	echo "Found correct python version"
+	@echo "Found correct python version"
 else
 	$(error "Could not find correct python version, please install 3.7.7")
 endif
@@ -34,5 +34,12 @@ endif
 
 	cd python/; ./make-python.sh
 
-typescript:
-	@echo "typescript"
+typescript: ## Build and execute all the typescript code samples
+# verify npm existence
+ifeq (, $(shell which npm))
+	$(error "No npm was found, please install npm to continue")
+else
+	@echo "found npm"
+endif
+
+	cd typescript/; ./make-typescript.sh

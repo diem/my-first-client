@@ -1,33 +1,31 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import {AccountKeys, Currency, mint} from "@libra/client";
-import {generateAccountKeys} from "./generateKeysExample";
-
 /**
  * mintExample demonstrates how to add currencies to account on the Libra blockchain
  * The mint also use to create new account by adding currencies base on new auth_key
  */
+import {Signer} from "@libra/client/dist/utils/signer";
+import AccountKeys from "@libra/client/dist/account/accountKeys";
+import {TestnetClient} from "@libra/client";
+import {bytesToHexString} from "@libra/client/dist/utils/bytes";
+
+const CURRENCY = "Coin1";
+
+/**
+ * mintExample demonstrates how to add currencies to account on the Libra blockchain testnet
+ * The mint also use to create new account by adding currencies base on new auth_key
+ */
 async function main() {
-  const accountKeys = generateAccountKeys();
+  //connect to client
+  const client = new TestnetClient();
+
+  //generate keys
+  const keyPair = Signer.generateKeyPair();
+  const accountKeys = new AccountKeys(keyPair);
+
   //use mint to create new account
-  const address = await minter(accountKeys, 192000000, "LBR");
+  await client.mint(bytesToHexString(accountKeys.authKey), BigInt(192000000), CURRENCY)
 
-  console.log("Account address: " + address);
-
+  console.log("Account address: %s", bytesToHexString(accountKeys.accountAddress));
 }
 
-export const minter = async (
-  accountKeys: AccountKeys,
-  amount = 1000000,
-  currency: Currency = 'LBR'
-): Promise<string> => {
-  try {
-    const transaction = await mint(accountKeys, amount, currency);
-
-    return transaction.transaction.script.receiver;
-  } catch (e) {
-    throw new Error('Failed to send create account request to client' + e);
-  }
-};
 
 main();
