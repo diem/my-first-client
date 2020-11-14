@@ -14,7 +14,7 @@ else
 endif
 
 #verify gradle version is 5+
-	@test "$(shell gradle -v | grep Gradle | grep -o '[0-9]\+.[0-9]\+.[0-9]\+' | cut --delimiter=. --fields=1)" -ge 5 || (echo "Could not find correct gradle version, please install 5+"; exit 13)
+	@test "$(shell gradle -v | grep Gradle | grep -o '[0-9]\+.[0-9]\+.[0-9]\+' | head -c 1)" -ge 5 || (echo "Could not find correct gradle version, please install 5+"; exit 13)
 	@echo Found correct gradle version
 
 	cd java/; ./make-java.sh
