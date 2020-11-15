@@ -73,7 +73,7 @@ public class MyFirstClient {
         IntentIdentifier intentIdentifier = new IntentIdentifier(accountIdentifier, CURRENCY_CODE, 100000000L);
         String intentIdentifierString = intentIdentifier.encode();
 
-        System.out.println("~ Encoded IntentIdentifier: " + intentIdentifierString);
+        System.out.println("Encoded IntentIdentifier: " + intentIdentifierString);
 
         System.out.println("#10 Deserialize IntentIdentifier");
         IntentIdentifier decodedIntentIdentifier = decode(TestnetPrefix, intentIdentifierString);

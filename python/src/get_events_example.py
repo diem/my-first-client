@@ -18,7 +18,7 @@ def main():
     private_key = Ed25519PrivateKey.generate()
     # generate auth key
     auth_key = AuthKey.from_public_key(private_key.public_key())
-    print(f"~ Generated address: {utils.account_address_hex(auth_key.account_address())}")
+    print(f"Generated address: {utils.account_address_hex(auth_key.account_address())}")
     # create new account
     faucet = testnet.Faucet(client)
     testnet.Faucet.mint(faucet, auth_key.hex(), 100000000, CURRENCY)
@@ -40,11 +40,11 @@ def subscribe_(client, events_key):
     for x in range(0, 15):
         events = client.get_events(events_key, start, 10)
         start += len(events)
-        print(f"~ {len(events)} new events found")
+        print(f"{len(events)} new events found")
         time.sleep(3)
 
         for i in range(0, len(events)):
-            print(f"~ Event # {i + 1}:")
+            print(f"Event # {i + 1}:")
             print(events[i])
 
 

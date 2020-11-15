@@ -33,7 +33,7 @@ def main():
     sender_private_key = Ed25519PrivateKey.generate()
     # generate auth key for sender account
     sender_auth_key = AuthKey.from_public_key(sender_private_key.public_key())
-    print(f"~ Generated sender address: {utils.account_address_hex(sender_auth_key.account_address())}")
+    print(f"Generated sender address: {utils.account_address_hex(sender_auth_key.account_address())}")
 
     print("#3 Create account")
     faucet = testnet.Faucet(client)
@@ -55,7 +55,7 @@ def main():
     receiver_private_key = Ed25519PrivateKey.generate()
     # generate auth key for receiver account
     receiver_auth_key = AuthKey.from_public_key(receiver_private_key.public_key())
-    print(f"~ Generated receiver address: {utils.account_address_hex(receiver_auth_key.account_address())}")
+    print(f"Generated receiver address: {utils.account_address_hex(receiver_auth_key.account_address())}")
 
     print("#8 Create second account")
     faucet = testnet.Faucet(client)
@@ -65,13 +65,13 @@ def main():
     account_identifier = identifier.encode_account(utils.account_address_hex(receiver_auth_key.account_address()), None,
                                                    identifier.TLB)
     encoded_intent_identifier = identifier.encode_intent(account_identifier, CURRENCY, 10000000)
-    print(f"~ Encoded IntentIdentifier: {encoded_intent_identifier}")
+    print(f"Encoded IntentIdentifier: {encoded_intent_identifier}")
 
     print("#10 Deserialize IntentIdentifier")
     intent_identifier = libra.identifier.decode_intent(encoded_intent_identifier, identifier.TLB)
-    print(f"~ Account (HEX) from intent: {utils.account_address_hex(intent_identifier.account_address)}")
-    print(f"~ Amount from intent: {intent_identifier.amount}")
-    print(f"~ Currency from intent: {intent_identifier.currency_code}")
+    print(f"Account (HEX) from intent: {utils.account_address_hex(intent_identifier.account_address)}")
+    print(f"Amount from intent: {intent_identifier.amount}")
+    print(f"Currency from intent: {intent_identifier.currency_code}")
 
     print("#11 Peer 2 peer transaction")
     # create script

@@ -19,7 +19,7 @@ def main():
     sender_private_key = Ed25519PrivateKey.generate()
     # generate auth key for sender account
     sender_auth_key = AuthKey.from_public_key(sender_private_key.public_key())
-    print(f"~ Generated sender address: {utils.account_address_hex(sender_auth_key.account_address())}")
+    print(f"Generated sender address: {utils.account_address_hex(sender_auth_key.account_address())}")
     # create sender account
     faucet = testnet.Faucet(client)
     testnet.Faucet.mint(faucet, sender_auth_key.hex(), 100000000, "Coin1")
@@ -31,7 +31,7 @@ def main():
     receiver_private_key = Ed25519PrivateKey.generate()
     # generate auth key for receiver account
     receiver_auth_key = AuthKey.from_public_key(receiver_private_key.public_key())
-    print(f"~ Generated receiver address: {utils.account_address_hex(receiver_auth_key.account_address())}")
+    print(f"Generated receiver address: {utils.account_address_hex(receiver_auth_key.account_address())}")
 
     # create receiver account
     faucet = testnet.Faucet(client)

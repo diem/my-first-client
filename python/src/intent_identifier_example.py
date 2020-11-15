@@ -14,14 +14,14 @@ def main():
     account_identifier = identifier.encode_account(utils.account_address_hex(auth_key.account_address()), None,
                                                    identifier.TLB)
     encoded_intent_identifier = identifier.encode_intent(account_identifier, "Coin1", 10000000)
-    print(f"~ Encoded IntentIdentifier: {encoded_intent_identifier}")
+    print(f"Encoded IntentIdentifier: {encoded_intent_identifier}")
 
     # deserialize IntentIdentifier
     intent_identifier = libra.identifier.decode_intent(encoded_intent_identifier, identifier.TLB)
 
-    print(f"~ Account (HEX) from intent: {utils.account_address_hex(intent_identifier.account_address)}")
-    print(f"~ Amount from intent: {intent_identifier.amount}")
-    print(f"~ Currency from intent: {intent_identifier.currency_code}")
+    print(f"Account (HEX) from intent: {utils.account_address_hex(intent_identifier.account_address)}")
+    print(f"Amount from intent: {intent_identifier.amount}")
+    print(f"Currency from intent: {intent_identifier.currency_code}")
 
 
 if __name__ == "__main__":

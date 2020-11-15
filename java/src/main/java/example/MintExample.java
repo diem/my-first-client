@@ -23,7 +23,7 @@ public class MintExample {
         AuthKey authKey = AuthKey.ed24419(privateKey.publicKey());
         String accountAddress = AccountAddressUtils.hex(authKey.accountAddress());
 
-        System.out.println("~ Generated address: " + accountAddress);
+        System.out.println("Generated address: " + accountAddress);
 
         //use mint to create new account
         Testnet.mintCoins(client, 100000000, authKey.hex(), CURRENCY_CODE);

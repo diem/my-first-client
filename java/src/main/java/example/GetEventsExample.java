@@ -52,10 +52,10 @@ public class GetEventsExample {
 
                 start += events.size();
 
-                System.out.println("~ " + events.size() + " new events found");
+                System.out.println(events.size() + " new events found");
 
                 for (int j = 0; j < events.size(); j++) {
-                    System.out.println("~ Event #" + (j + 1) + ":");
+                    System.out.println("Event #" + (j + 1) + ":");
                     System.out.println(events.get(j));
                 }
 

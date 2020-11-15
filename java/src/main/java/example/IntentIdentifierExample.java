@@ -25,13 +25,13 @@ public class IntentIdentifierExample {
         IntentIdentifier intentIdentifier = new IntentIdentifier(accountIdentifier, CURRENCY, 10000000L);
         String intentIdentifierString = intentIdentifier.encode();
 
-        System.out.println("~ Encoded IntentIdentifier: " + intentIdentifierString);
+        System.out.println("Encoded IntentIdentifier: " + intentIdentifierString);
 
         //deserialize IntentIdentifier
         IntentIdentifier decodedIntentIdentifier = decode(TestnetPrefix, intentIdentifierString);
 
-        System.out.println("~ Account (HEX) from intent: " + Hex.encode(decodedIntentIdentifier.getAccountIdentifier().getAccountAddress().value));
-        System.out.println("~ Amount from intent: " + decodedIntentIdentifier.getAmount());
-        System.out.println("~ Currency from intent: " + decodedIntentIdentifier.getCurrency());
+        System.out.println("Account (HEX) from intent: " + Hex.encode(decodedIntentIdentifier.getAccountIdentifier().getAccountAddress().value));
+        System.out.println("Amount from intent: " + decodedIntentIdentifier.getAmount());
+        System.out.println("Currency from intent: " + decodedIntentIdentifier.getCurrency());
     }
 }

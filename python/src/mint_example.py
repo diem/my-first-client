@@ -16,7 +16,7 @@ def main():
 
     # generate auth key for new account
     auth_key = AuthKey.from_public_key(private_key.public_key())
-    print(f"~ Generated address: {utils.account_address_hex(auth_key.account_address())}")
+    print(f"Generated address: {utils.account_address_hex(auth_key.account_address())}")
 
     # use mint to create new account
     faucet = testnet.Faucet(client)

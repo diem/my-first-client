@@ -26,7 +26,7 @@ public class GetAccountInfoExample {
         //get account information
         Account account = client.getAccount(authKey.accountAddress());
 
-        System.out.println("~ Account info:");
+        System.out.println("Account info:");
         System.out.println(account);
     }
 }
