@@ -21,7 +21,7 @@ def main():
     print(f"~ Generated address: {utils.account_address_hex(auth_key.account_address())}")
     # create new account
     faucet = testnet.Faucet(client)
-    testnet.Faucet.mint(faucet, auth_key.hex(), 110000000, CURRENCY)
+    testnet.Faucet.mint(faucet, auth_key.hex(), 100000000, CURRENCY)
 
     # get account events key
     account = client.get_account(auth_key.account_address())
@@ -50,7 +50,7 @@ def subscribe_(client, events_key):
 
 def minter(client, auth_key):
     for x in range(0, 10):
-        amount = randrange(10, 19) * 10000000
+        amount = 1000000
         faucet = testnet.Faucet(client)
         testnet.Faucet.mint(faucet, auth_key.hex(), amount, CURRENCY)
         time.sleep(1)

@@ -30,8 +30,8 @@ public class SubmitPeerToPeerTransactionExample {
         PrivateKey senderPrivateKey = new Ed25519PrivateKey(new Ed25519PrivateKeyParameters(new SecureRandom()));
         //generate auth key for sender account
         AuthKey senderAuthKey = AuthKey.ed24419(senderPrivateKey.publicKey());
-        //create sender account
-        Testnet.mintCoins(client, 1340000000, senderAuthKey.hex(), CURRENCY_CODE);
+        //create sender account with 100 Coin1 balance
+        Testnet.mintCoins(client, 100000000, senderAuthKey.hex(), CURRENCY_CODE);
 
         //get sender account for sequence number
         Account account = client.getAccount(senderAuthKey.accountAddress());
@@ -40,18 +40,18 @@ public class SubmitPeerToPeerTransactionExample {
         PrivateKey receiverPrivateKey = new Ed25519PrivateKey(new Ed25519PrivateKeyParameters(new SecureRandom()));
         //generate auth key for receiver account
         AuthKey receiverAuthKey = AuthKey.ed24419(receiverPrivateKey.publicKey());
-        //create receiver account
-        Testnet.mintCoins(client, 120000000, receiverAuthKey.hex(), CURRENCY_CODE);
+        //create receiver account with 1 Coin1 balance
+        Testnet.mintCoins(client, 10000000, receiverAuthKey.hex(), CURRENCY_CODE);
 
         //Create script
         TransactionPayload script = new TransactionPayload.Script(
                 Helpers.encode_peer_to_peer_with_metadata_script(
                         CurrencyCode.typeTag(CURRENCY_CODE),
                         receiverAuthKey.accountAddress(),
-                        130000000L,
+                        10000000L,
                         new Bytes(new byte[0]),
                         new Bytes(new byte[0])));
-        //Create transaction
+        //Create transaction to send 1 Coin1
         RawTransaction rawTransaction = new RawTransaction(
                 senderAuthKey.accountAddress(),
                 account.getSequenceNumber(),

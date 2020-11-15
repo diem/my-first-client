@@ -26,6 +26,6 @@ public class MintExample {
         System.out.println("~ Generated address: " + accountAddress);
 
         //use mint to create new account
-        Testnet.mintCoins(client, 192000000, authKey.hex(), CURRENCY_CODE);
+        Testnet.mintCoins(client, 100000000, authKey.hex(), CURRENCY_CODE);
     }
 }

@@ -22,7 +22,7 @@ public class IntentIdentifierExample {
         AuthKey authKey = AuthKey.ed24419(privateKey.publicKey());
         //create IntentIdentifier
         AccountIdentifier accountIdentifier = new AccountIdentifier(TestnetPrefix, authKey.accountAddress());
-        IntentIdentifier intentIdentifier = new IntentIdentifier(accountIdentifier, CURRENCY, 130000000L);
+        IntentIdentifier intentIdentifier = new IntentIdentifier(accountIdentifier, CURRENCY, 10000000L);
         String intentIdentifierString = intentIdentifier.encode();
 
         System.out.println("~ Encoded IntentIdentifier: " + intentIdentifierString);

@@ -11,7 +11,6 @@ This repo includes example code for the My First Client tutorial.
 
 Requirements for each SDK:
 
-* Go: Go v?
 * Python: Python v 3.7.*, pipenv
-* Java: Java 1.8 (OpenJDK8.0), gradle v5+
-* TypeScript: Javascript VM v?, babel v?, npm v? or yarn v?
+* Java: Java 8+, gradle v5
+<strike>* Go: Go v1.1+</strike>

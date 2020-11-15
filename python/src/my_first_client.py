@@ -1,6 +1,6 @@
 """
  This code demonstrates basic flow for working with the LibraClient.
- 1. connect to testnet
+ 1. Connect to testnet
  2. Generate keys
  3. Create account - by minting
  4. Get account information
@@ -37,7 +37,7 @@ def main():
 
     print("#3 Create account")
     faucet = testnet.Faucet(client)
-    testnet.Faucet.mint(faucet, sender_auth_key.hex(), 1340000000, CURRENCY)
+    testnet.Faucet.mint(faucet, sender_auth_key.hex(), 100000000, CURRENCY)
 
     print("#4 Get account information")
     sender_account = client.get_account(sender_auth_key.account_address())
@@ -48,7 +48,7 @@ def main():
 
     print("#6 Add money to account")
     faucet = testnet.Faucet(client)
-    testnet.Faucet.mint(faucet, sender_auth_key.hex(), 270000000, CURRENCY)
+    testnet.Faucet.mint(faucet, sender_auth_key.hex(), 10000000, CURRENCY)
 
     print("#7 Generate Keys")
     # generate private key for receiver account
@@ -59,12 +59,12 @@ def main():
 
     print("#8 Create second account")
     faucet = testnet.Faucet(client)
-    testnet.Faucet.mint(faucet, receiver_auth_key.hex(), 2560000000, CURRENCY)
+    testnet.Faucet.mint(faucet, receiver_auth_key.hex(), 1000000, CURRENCY)
 
     print("#9 Generate IntentIdentifier")
     account_identifier = identifier.encode_account(utils.account_address_hex(receiver_auth_key.account_address()), None,
                                                    identifier.TLB)
-    encoded_intent_identifier = identifier.encode_intent(account_identifier, CURRENCY, 130000000)
+    encoded_intent_identifier = identifier.encode_intent(account_identifier, CURRENCY, 10000000)
     print(f"~ Encoded IntentIdentifier: {encoded_intent_identifier}")
 
     print("#10 Deserialize IntentIdentifier")

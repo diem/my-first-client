@@ -22,8 +22,8 @@ public class GenerateKeysExample {
         AuthKey authKey = AuthKey.ed24419(privateKey.publicKey());
         String accountAddress = AccountAddressUtils.hex(authKey.accountAddress());
 
-        System.out.println("~ Generated address: " + accountAddress);
-        System.out.println("~ Auth Key (HEX): " + authKey.hex());
-        System.out.println("~ Public key (HEX): " + Hex.encode(privateKey.publicKey()));
+        System.out.println("Generated address: " + accountAddress);
+        System.out.println("Auth Key (HEX): " + authKey.hex());
+        System.out.println("Public key (HEX): " + Hex.encode(privateKey.publicKey()));
     }
 }

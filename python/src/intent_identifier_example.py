@@ -13,7 +13,7 @@ def main():
     # create intent identifier
     account_identifier = identifier.encode_account(utils.account_address_hex(auth_key.account_address()), None,
                                                    identifier.TLB)
-    encoded_intent_identifier = identifier.encode_intent(account_identifier, "Coin1", 130000000)
+    encoded_intent_identifier = identifier.encode_intent(account_identifier, "Coin1", 10000000)
     print(f"~ Encoded IntentIdentifier: {encoded_intent_identifier}")
 
     # deserialize IntentIdentifier

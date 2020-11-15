@@ -21,7 +21,7 @@ public class GetAccountInfoExample {
         //generate auth key for new account
         AuthKey authKey = AuthKey.ed24419(privateKey.publicKey());
         //create account
-        Testnet.mintCoins(client, 1340000000, authKey.hex(), CURRENCY_CODE);
+        Testnet.mintCoins(client, 1000000000, authKey.hex(), CURRENCY_CODE);
 
         //get account information
         Account account = client.getAccount(authKey.accountAddress());

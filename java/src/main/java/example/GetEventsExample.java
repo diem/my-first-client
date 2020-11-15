@@ -24,7 +24,7 @@ public class GetEventsExample {
         Ed25519PrivateKeyParameters privateKeyParams = new Ed25519PrivateKeyParameters(random);
         Ed25519PrivateKey privateKey = new Ed25519PrivateKey(privateKeyParams);
         AuthKey authKey = AuthKey.ed24419(privateKey.publicKey());
-        Testnet.mintCoins(client, 110000000, authKey.hex(), CURRENCY_CODE);
+        Testnet.mintCoins(client, 100000000, authKey.hex(), CURRENCY_CODE);
 
         //get account events key
         Account account = client.getAccount(authKey.accountAddress());
@@ -74,7 +74,7 @@ public class GetEventsExample {
     private static void startMinter(LibraClient client, AuthKey authKey) {
         Runnable minter = () -> {
             for (int i = 0; i < 10; i++) {
-                int amount = ThreadLocalRandom.current().nextInt(10, 19) * 10000000;
+                int amount =  1000000;
                 Testnet.mintCoins(client, amount, authKey.hex(), CURRENCY_CODE);
                 try {
                     Thread.sleep(1_000);

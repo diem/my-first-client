@@ -22,6 +22,7 @@ public class MyFirstClient {
     public static final String CURRENCY_CODE = "Coin1";
 
     /**
+     *
      * This code demonstrates basic flow for working with the LibraClient.
      * 1. Connect to testnet
      * 2. Generate keys
@@ -34,8 +35,10 @@ public class MyFirstClient {
      * 9. Generate IntentIdentifier
      * 10. Deserialize IntentIdentifier
      * 11. Transfer money between accounts (peer to peer transaction)
+     *
      */
     public static void main(String[] args) throws LibraException {
+        System.out.println("");
         System.out.println("#1 Connect to testnet");
         LibraClient client = Testnet.createClient();
 
@@ -43,8 +46,8 @@ public class MyFirstClient {
         PrivateKey senderPrivateKey = new Ed25519PrivateKey(new Ed25519PrivateKeyParameters(new SecureRandom()));
         AuthKey senderAuthKey = AuthKey.ed24419(senderPrivateKey.publicKey());
 
-        System.out.println("#3 Create account");
-        Testnet.mintCoins(client, 1340000000, senderAuthKey.hex(), CURRENCY_CODE);
+        System.out.println("#3 Create wallet");
+        Testnet.mintCoins(client, 100000000, senderAuthKey.hex(), CURRENCY_CODE);
 
         System.out.println("#4 Get account information");
         Account senderAccount = client.getAccount(senderAuthKey.accountAddress());
@@ -54,20 +57,20 @@ public class MyFirstClient {
         GetEventsExample.subscribe(client, eventsKey);
 
         System.out.println("#6 Add money to account");
-        Testnet.mintCoins(client, 270000000, senderAuthKey.hex(), CURRENCY_CODE);
+        Testnet.mintCoins(client, 10000000, senderAuthKey.hex(), CURRENCY_CODE);
 
-        System.out.println("#7 Generate Keys");
+        System.out.println("#7 Generate Keys for second wallet");
         //generate private key for new account
         PrivateKey receiverPrivateKey = new Ed25519PrivateKey(new Ed25519PrivateKeyParameters(new SecureRandom()));
         //generate auth key for new account
         AuthKey receiverAuthKey = AuthKey.ed24419(receiverPrivateKey.publicKey());
 
-        System.out.println("#8 Create second account");
-        Testnet.mintCoins(client, 2560000000L, receiverAuthKey.hex(), CURRENCY_CODE);
+        System.out.println("#8 Add funds from mint to the second wallet" + receiverAuthKey.hex());
+        Testnet.mintCoins(client, 1000000L, receiverAuthKey.hex(), CURRENCY_CODE);
 
         System.out.println("#9 Generate IntentIdentifier");
         AccountIdentifier accountIdentifier = new AccountIdentifier(TestnetPrefix, receiverAuthKey.accountAddress());
-        IntentIdentifier intentIdentifier = new IntentIdentifier(accountIdentifier, CURRENCY_CODE, 130000000L);
+        IntentIdentifier intentIdentifier = new IntentIdentifier(accountIdentifier, CURRENCY_CODE, 100000000L);
         String intentIdentifierString = intentIdentifier.encode();
 
         System.out.println("~ Encoded IntentIdentifier: " + intentIdentifierString);
@@ -75,7 +78,7 @@ public class MyFirstClient {
         System.out.println("#10 Deserialize IntentIdentifier");
         IntentIdentifier decodedIntentIdentifier = decode(TestnetPrefix, intentIdentifierString);
 
-        System.out.println("#11 Peer 2 peer transaction");
+        System.out.println("#11 Peer-to-peer transaction");
         //Create script
         TransactionPayload script = new TransactionPayload.Script(
                 Helpers.encode_peer_to_peer_with_metadata_script(
@@ -102,13 +105,13 @@ public class MyFirstClient {
         } catch (StaleResponseException e) {
             //ignore
         }
-        //Wait for the transaction to completenew SecureRandom()
+        //Wait for the transaction to complete new SecureRandom()
         try {
             JsonRpc.Transaction transaction = client.waitForTransaction(st, 100000);
 
             System.out.println(transaction);
         } catch (LibraException e) {
-            throw new RuntimeException("Failed while waiting to transaction ", e);
+            throw new RuntimeException("Failed while waiting for transaction ", e);
         }
     }
 }

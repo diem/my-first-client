@@ -22,7 +22,7 @@ def main():
     print(f"~ Generated sender address: {utils.account_address_hex(sender_auth_key.account_address())}")
     # create sender account
     faucet = testnet.Faucet(client)
-    testnet.Faucet.mint(faucet, sender_auth_key.hex(), 1340000000, "Coin1")
+    testnet.Faucet.mint(faucet, sender_auth_key.hex(), 100000000, "Coin1")
 
     # get sender account
     sender_account = client.get_account(sender_auth_key.account_address())
@@ -41,7 +41,7 @@ def main():
     script = stdlib.encode_peer_to_peer_with_metadata_script(
         currency=utils.currency_code(CURRENCY),
         payee=receiver_auth_key.account_address(),
-        amount=130000000,
+        amount=10000000,
         metadata=b'',  # no requirement for metadata and metadata signature
         metadata_signature=b'',
     )

@@ -17,7 +17,7 @@ def main():
     print(f"~ Generated address: {utils.account_address_hex(auth_key.account_address())}")
     # create account
     faucet = testnet.Faucet(client)
-    testnet.Faucet.mint(faucet, auth_key.hex(), 1340000000, "Coin1")
+    testnet.Faucet.mint(faucet, auth_key.hex(), 100000000, "Coin1")
 
     # get account information
     account = client.get_account(auth_key.account_address())
