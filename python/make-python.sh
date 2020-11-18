@@ -21,8 +21,8 @@ printf "pwd: ${PWD}${NL}"
 pipenv run python src/mint_example.py
 
 printf "${PURPLE}Get Account Example:${NC}${NL}"
-printf "execute: pipenv run python src/get_account_info_example.py${NL}"
-pipenv run python src/get_account_info_example.py
+printf "execute: pipenv run python src/get_account_example.py${NL}"
+pipenv run python src/get_account_example.py
 
 printf "${PURPLE}Intent Identifier Example:${NC}${NL}"
 printf "execute: pipenv run python src/intent_identifier_example.py${NL}"

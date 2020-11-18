@@ -34,5 +34,12 @@ endif
 
 	cd python/; ./make-python.sh
 
-typescript:
-	@echo "typescript"
+typescript: ## Build and execute all the typescript code samples
+	@echo "typescript"	# verify npm existence
+ifeq (, $(shell which npm))
+	$(error "No npm was found, please install npm to continue")
+else
+	@echo "found npm"
+endif
+
+	cd typescript/; ./make-typescript.sh
