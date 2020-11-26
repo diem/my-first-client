@@ -2,7 +2,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from libra import testnet, AuthKey, utils
 
 """
- mint_example demonstrates how to add currencies to account on the Libra blockchain testnet
+ mint_example demonstrates how to add currencies to account on the Diem blockchain testnet
  The mint also use to create new account by adding currencies base on new auth_key
 """
 

@@ -2,7 +2,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from libra import testnet, AuthKey, utils
 
 """
-get_account_info_example demonstrates the required operation to retrieve account information from the Libra blockchain
+get_account_info_example demonstrates the required operation to retrieve account information from the Diem blockchain
 """
 
 

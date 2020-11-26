@@ -1,5 +1,5 @@
 """
- This code demonstrates basic flow for working with the LibraClient.
+ This code demonstrates basic flow for working with the DiemClient.
  1. Connect to testnet
  2. Generate keys
  3. Create account - by minting

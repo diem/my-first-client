@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-libra-client-sdk = "*"
+libra-client-sdk = {git = "https://49decaaaf2e5c1c77eca2805117a36b3135f2c26@github.com/libra/client-sdk-python.git",ref = "diem-migration"}
 
 [requires]
 python_version = "3.7"

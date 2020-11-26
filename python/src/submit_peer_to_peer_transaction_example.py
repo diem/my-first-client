@@ -7,7 +7,7 @@ from libra.testnet import CHAIN_ID
 CURRENCY = "Coin1"
 
 """
-submit_peer_to_peer_transaction_example demonstrates currencies transfer between 2 accounts on the Libra blockchain
+submit_peer_to_peer_transaction_example demonstrates currencies transfer between 2 accounts on the Diem blockchain
 """
 
 
