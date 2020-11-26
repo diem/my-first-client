@@ -7,6 +7,7 @@ import {Signer} from "@libra/client/dist/utils/signer";
 import AccountKeys from "@libra/client/dist/account/accountKeys";
 import {bytesToHexString} from "@libra/client/dist/utils/bytes";
 
+//FIXME: DM
 const HRP = 'tlb';
 const CURRENCY = "Coin1";
 

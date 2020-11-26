@@ -11,7 +11,7 @@ import {delay, subscribe} from "./eventsSubscriber";
 const CURRENCY = "Coin1";
 
 /**
- * This code demonstrates basic flow for working with the LibraClient.
+ * This code demonstrates basic flow for working with the DiemClient.
  * 1. connect to testnet
  * 2. Generate keys
  * 3. Create account - by minting
@@ -68,10 +68,12 @@ export async function main(): Promise<void> {
   await client.mint(bytesToHexString(receiverAccountKeys.authKey), BigInt(2560000000), CURRENCY);
 
   console.log("#9 Generate IntentIdentifier")
+  //FIXME: DM
   const encodeIntent = LibraUtils.encodeIntent(new Intent('tlb', bytesToHexString(receiverAccountKeys.accountAddress), undefined, "Coin1", 130000000));
   console.log("~ Encoded IntentIdentifier: %s", encodeIntent.href)
 
   console.log("#10 Deserialize IntentIdentifier")
+  //FIXME: DM
   const decodeIntent = LibraUtils.decodeIntent("tlb", encodeIntent);
   console.log("~ Account (HEX) from intent: %s", decodeIntent.address);
   console.log("~ Amount from intent: %s", decodeIntent.amount);

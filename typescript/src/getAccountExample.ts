@@ -4,7 +4,7 @@ import AccountKeys from "@libra/client/dist/account/accountKeys";
 import {TestnetClient} from "@libra/client";
 
 /**
- * getAccountExample demonstrates the required operation to retrieve account information from the Libra blockchain
+ * getAccountExample demonstrates the required operation to retrieve account information from the Diem blockchain
  */
 
 async function main() {

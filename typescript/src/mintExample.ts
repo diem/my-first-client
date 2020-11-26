@@ -1,5 +1,5 @@
 /**
- * mintExample demonstrates how to add currencies to account on the Libra blockchain
+ * mintExample demonstrates how to add currencies to account on the Diem blockchain
  * The mint also use to create new account by adding currencies base on new auth_key
  */
 import {Signer} from "@libra/client/dist/utils/signer";
@@ -10,7 +10,7 @@ import {bytesToHexString} from "@libra/client/dist/utils/bytes";
 const CURRENCY = "Coin1";
 
 /**
- * mintExample demonstrates how to add currencies to account on the Libra blockchain testnet
+ * mintExample demonstrates how to add currencies to account on the Diem blockchain testnet
  * The mint also use to create new account by adding currencies base on new auth_key
  */
 async function main() {

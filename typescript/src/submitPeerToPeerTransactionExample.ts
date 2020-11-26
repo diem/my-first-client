@@ -10,7 +10,7 @@ import {delay} from "./eventsSubscriber";
 const CURRENCY = "Coin1";
 
 /**
- * submitPeerToPeerTransactionExample demonstrates currencies transfer between 2 accounts on the Libra blockchain
+ * submitPeerToPeerTransactionExample demonstrates currencies transfer between 2 accounts on the Diem blockchain
  */
 async function main() {
   //generate sender keys
