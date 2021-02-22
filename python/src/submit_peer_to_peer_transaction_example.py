@@ -1,14 +1,13 @@
-import time
-
-from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
-from libra import stdlib, utils, libra_types, testnet, AuthKey
-from libra.testnet import CHAIN_ID
-
-CURRENCY = "Coin1"
-
 """
 submit_peer_to_peer_transaction_example demonstrates currencies transfer between 2 accounts on the Libra blockchain
 """
+
+import time
+
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from diem import stdlib, utils, diem_types, testnet, AuthKey
+
+CURRENCY = "XUS"
 
 
 def main():
@@ -20,9 +19,10 @@ def main():
     # generate auth key for sender account
     sender_auth_key = AuthKey.from_public_key(sender_private_key.public_key())
     print(f"Generated sender address: {utils.account_address_hex(sender_auth_key.account_address())}")
+
     # create sender account
     faucet = testnet.Faucet(client)
-    testnet.Faucet.mint(faucet, sender_auth_key.hex(), 100000000, "Coin1")
+    testnet.Faucet.mint(faucet, sender_auth_key.hex(), 100000000, "XUS")
 
     # get sender account
     sender_account = client.get_account(sender_auth_key.account_address())
@@ -46,15 +46,15 @@ def main():
         metadata_signature=b'',
     )
     # create transaction
-    raw_transaction = libra_types.RawTransaction(
+    raw_transaction = diem_types.RawTransaction(
         sender=sender_auth_key.account_address(),
         sequence_number=sender_account.sequence_number,
-        payload=libra_types.TransactionPayload__Script(script),
+        payload=diem_types.TransactionPayload__Script(script),
         max_gas_amount=1_000_000,
         gas_unit_price=0,
         gas_currency_code=CURRENCY,
         expiration_timestamp_secs=int(time.time()) + 30,
-        chain_id=CHAIN_ID,
+        chain_id=testnet.CHAIN_ID,
     )
     # sign transaction
     signature = sender_private_key.sign(utils.raw_transaction_signing_msg(raw_transaction))

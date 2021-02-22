@@ -1,13 +1,12 @@
+"""get_events_example demonstrates how to subscribe to a specific events stream base on events key"""
+
 import time
-from random import randrange
 from threading import Thread
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
-from libra import testnet, AuthKey, utils
+from diem import testnet, AuthKey, utils
 
-CURRENCY = "Coin1"
-
-"""get_events_example demonstrates how to subscribe to a specific events stream base on events key"""
+CURRENCY = "XUS"
 
 
 def main():
@@ -19,9 +18,10 @@ def main():
     # generate auth key
     auth_key = AuthKey.from_public_key(private_key.public_key())
     print(f"Generated address: {utils.account_address_hex(auth_key.account_address())}")
+
     # create new account
     faucet = testnet.Faucet(client)
-    testnet.Faucet.mint(faucet, auth_key.hex(), 100000000, CURRENCY)
+    testnet.Faucet.mint(faucet, auth_key.hex(), 100_000_000, CURRENCY)
 
     # get account events key
     account = client.get_account(auth_key.account_address())

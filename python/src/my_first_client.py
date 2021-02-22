@@ -12,16 +12,15 @@
  10. Deserialize IntentIdentifier
  11. Transfer money between accounts (peer to peer transaction)
 """
+
 import time
 
-import libra
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
-from libra import AuthKey, testnet, identifier, utils, libra_types, stdlib
-from libra.testnet import CHAIN_ID
+from diem import AuthKey, testnet, identifier, utils, diem_types, stdlib
 
 import get_events_example
 
-CURRENCY = "Coin1"
+CURRENCY = "XUS"
 
 
 def main():
@@ -62,13 +61,14 @@ def main():
     testnet.Faucet.mint(faucet, receiver_auth_key.hex(), 1000000, CURRENCY)
 
     print("#9 Generate IntentIdentifier")
-    account_identifier = identifier.encode_account(utils.account_address_hex(receiver_auth_key.account_address()), None,
-                                                   identifier.TLB)
+    account_identifier = identifier.encode_account(
+        utils.account_address_hex(receiver_auth_key.account_address()), None, identifier.TDM
+    )
     encoded_intent_identifier = identifier.encode_intent(account_identifier, CURRENCY, 10000000)
     print(f"Encoded IntentIdentifier: {encoded_intent_identifier}")
 
     print("#10 Deserialize IntentIdentifier")
-    intent_identifier = libra.identifier.decode_intent(encoded_intent_identifier, identifier.TLB)
+    intent_identifier = identifier.decode_intent(encoded_intent_identifier, identifier.TDM)
     print(f"Account (HEX) from intent: {utils.account_address_hex(intent_identifier.account_address)}")
     print(f"Amount from intent: {intent_identifier.amount}")
     print(f"Currency from intent: {intent_identifier.currency_code}")
@@ -83,15 +83,15 @@ def main():
         metadata_signature=b'',
     )
     # create transaction
-    raw_transaction = libra_types.RawTransaction(
+    raw_transaction = diem_types.RawTransaction(
         sender=sender_auth_key.account_address(),
         sequence_number=sender_account.sequence_number,
-        payload=libra_types.TransactionPayload__Script(script),
+        payload=diem_types.TransactionPayload__Script(script),
         max_gas_amount=1_000_000,
         gas_unit_price=0,
         gas_currency_code=CURRENCY,
         expiration_timestamp_secs=int(time.time()) + 30,
-        chain_id=CHAIN_ID,
+        chain_id=testnet.CHAIN_ID,
     )
     # sign transaction
     signature = sender_private_key.sign(utils.raw_transaction_signing_msg(raw_transaction))
