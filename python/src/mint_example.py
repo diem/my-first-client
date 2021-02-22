@@ -1,10 +1,10 @@
-from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
-from libra import testnet, AuthKey, utils
-
 """
  mint_example demonstrates how to add currencies to account on the Libra blockchain testnet
  The mint also use to create new account by adding currencies base on new auth_key
 """
+
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from diem import testnet, AuthKey, utils
 
 
 def main():
@@ -20,7 +20,7 @@ def main():
 
     # use mint to create new account
     faucet = testnet.Faucet(client)
-    testnet.Faucet.mint(faucet, auth_key.hex(), 192000000, "Coin1")
+    testnet.Faucet.mint(faucet, auth_key.hex(), 192000000, "XUS")
 
 
 if __name__ == "__main__":
