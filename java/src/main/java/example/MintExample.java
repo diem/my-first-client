@@ -1,8 +1,8 @@
 package example;
 
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
-import org.libra.*;
-import org.libra.utils.AccountAddressUtils;
+import com.diem.*;
+import com.diem.utils.AccountAddressUtils;
 
 import java.security.SecureRandom;
 
@@ -11,11 +11,11 @@ import java.security.SecureRandom;
  * The mint also use to create new account by adding currencies base on new auth_key
  */
 public class MintExample {
-    public static final String CURRENCY_CODE = "Coin1";
+    public static final String CURRENCY_CODE = "XUS";
 
     public static void main(String[] args) {
         //connect to testnet
-        LibraClient client = Testnet.createClient();
+        DiemClient client = Testnet.createClient();
 
         //generate private key for new account
         PrivateKey privateKey = new Ed25519PrivateKey(new Ed25519PrivateKeyParameters(new SecureRandom()));

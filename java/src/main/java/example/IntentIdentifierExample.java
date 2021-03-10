@@ -1,19 +1,19 @@
 package example;
 
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
-import org.libra.*;
-import org.libra.utils.Hex;
+import com.diem.*;
+import com.diem.utils.Hex;
 
 import java.security.SecureRandom;
 
-import static org.libra.AccountIdentifier.NetworkPrefix.TestnetPrefix;
-import static org.libra.IntentIdentifier.decode;
+import static com.diem.AccountIdentifier.NetworkPrefix.TestnetPrefix;
+import static com.diem.IntentIdentifier.decode;
 
 /**
  * IntentIdentifierExample demonstrates the IntentIdentifier generation and deserialization
  */
 public class IntentIdentifierExample {
-    public static final String CURRENCY = "Coin1";
+    public static final String CURRENCY = "XUS";
 
     public static void main(String[] args) {
         //generate private key for new account

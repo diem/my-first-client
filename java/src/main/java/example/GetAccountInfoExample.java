@@ -1,8 +1,8 @@
 package example;
 
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
-import org.libra.*;
-import org.libra.jsonrpctypes.JsonRpc.Account;
+import com.diem.*;
+import com.diem.jsonrpc.JsonRpc.Account;
 
 import java.security.SecureRandom;
 
@@ -10,11 +10,11 @@ import java.security.SecureRandom;
  * GetAccountInfoExample demonstrates the required operation to retrieve account information from the Libra blockchain
  */
 public class GetAccountInfoExample {
-    public static final String CURRENCY_CODE = "Coin1";
+    public static final String CURRENCY_CODE = "XUS";
 
-    public static void main(String[] args) throws LibraException {
+    public static void main(String[] args) throws DiemException {
         //connect to testnet
-        LibraClient client = Testnet.createClient();
+        DiemClient client = Testnet.createClient();
 
         //generate private key for new account
         PrivateKey privateKey = new Ed25519PrivateKey(new Ed25519PrivateKeyParameters(new SecureRandom()));

@@ -1,9 +1,9 @@
 package example;
 
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
-import org.libra.*;
-import org.libra.jsonrpctypes.JsonRpc.Account;
-import org.libra.jsonrpctypes.JsonRpc.Event;
+import com.diem.*;
+import com.diem.jsonrpc.JsonRpc.Account;
+import com.diem.jsonrpc.JsonRpc.Event;
 
 import java.security.SecureRandom;
 import java.util.List;
@@ -13,11 +13,11 @@ import java.util.concurrent.ThreadLocalRandom;
  * GetEventsExample demonstrates how to subscribe to a specific events stream base on events key
  */
 public class GetEventsExample {
-    public static final String CURRENCY_CODE = "Coin1";
+    public static final String CURRENCY_CODE = "XUS";
 
-    public static void main(String[] args) throws LibraException {
+    public static void main(String[] args) throws DiemException {
         //connect to testnet
-        LibraClient client = Testnet.createClient();
+        DiemClient client = Testnet.createClient();
 
         //create new account
         SecureRandom random = new SecureRandom();
@@ -37,7 +37,7 @@ public class GetEventsExample {
         subscribe(client, eventsKey);
     }
 
-    public static void subscribe(LibraClient client, String eventsKey) {
+    public static void subscribe(DiemClient client, String eventsKey) {
         Runnable listener = () -> {
             long start = 0;
 
@@ -46,7 +46,7 @@ public class GetEventsExample {
 
                 try {
                     events = client.getEvents(eventsKey, start, 10);
-                } catch (LibraException e) {
+                } catch (DiemException e) {
                     throw new RuntimeException(e);
                 }
 
@@ -71,7 +71,7 @@ public class GetEventsExample {
         listenerThread.start();
     }
 
-    private static void startMinter(LibraClient client, AuthKey authKey) {
+    private static void startMinter(DiemClient client, AuthKey authKey) {
         Runnable minter = () -> {
             for (int i = 0; i < 10; i++) {
                 int amount =  1000000;

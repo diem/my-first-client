@@ -1,10 +1,10 @@
 package example;
 
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
-import org.libra.AuthKey;
-import org.libra.Ed25519PrivateKey;
-import org.libra.utils.AccountAddressUtils;
-import org.libra.utils.Hex;
+import com.diem.AuthKey;
+import com.diem.Ed25519PrivateKey;
+import com.diem.utils.AccountAddressUtils;
+import com.diem.utils.Hex;
 
 import java.security.SecureRandom;
 

@@ -1,29 +1,29 @@
 import com.novi.serde.Bytes;
 import example.GetEventsExample;
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
-import org.libra.*;
-import org.libra.jsonrpc.StaleResponseException;
-import org.libra.jsonrpctypes.JsonRpc;
-import org.libra.jsonrpctypes.JsonRpc.Account;
-import org.libra.stdlib.Helpers;
-import org.libra.types.RawTransaction;
-import org.libra.types.SignedTransaction;
-import org.libra.types.TransactionPayload;
-import org.libra.utils.CurrencyCode;
+import com.diem.*;
+import com.diem.jsonrpc.StaleResponseException;
+import com.diem.jsonrpc.JsonRpc;
+import com.diem.jsonrpc.JsonRpc.Account;
+import com.diem.stdlib.Helpers;
+import com.diem.types.RawTransaction;
+import com.diem.types.SignedTransaction;
+import com.diem.types.TransactionPayload;
+import com.diem.utils.CurrencyCode;
 
 import java.security.SecureRandom;
 
-import static org.libra.AccountIdentifier.NetworkPrefix.TestnetPrefix;
-import static org.libra.IntentIdentifier.decode;
-import static org.libra.Testnet.CHAIN_ID;
+import static com.diem.AccountIdentifier.NetworkPrefix.TestnetPrefix;
+import static com.diem.IntentIdentifier.decode;
+import static com.diem.Testnet.CHAIN_ID;
 
 public class MyFirstClient {
     //the default currency on testnet
-    public static final String CURRENCY_CODE = "Coin1";
+    public static final String CURRENCY_CODE = "XUS";
 
     /**
      *
-     * This code demonstrates basic flow for working with the LibraClient.
+     * This code demonstrates basic flow for working with the DiemClient.
      * 1. Connect to testnet
      * 2. Generate keys
      * 3. Create account - by minting
@@ -37,10 +37,10 @@ public class MyFirstClient {
      * 11. Transfer money between accounts (peer to peer transaction)
      *
      */
-    public static void main(String[] args) throws LibraException {
+    public static void main(String[] args) throws DiemException {
         System.out.println("");
         System.out.println("#1 Connect to testnet");
-        LibraClient client = Testnet.createClient();
+        DiemClient client = Testnet.createClient();
 
         System.out.println("#2 Generate Keys");
         PrivateKey senderPrivateKey = new Ed25519PrivateKey(new Ed25519PrivateKeyParameters(new SecureRandom()));
@@ -110,7 +110,7 @@ public class MyFirstClient {
             JsonRpc.Transaction transaction = client.waitForTransaction(st, 100000);
 
             System.out.println(transaction);
-        } catch (LibraException e) {
+        } catch (DiemException e) {
             throw new RuntimeException("Failed while waiting for transaction ", e);
         }
     }
