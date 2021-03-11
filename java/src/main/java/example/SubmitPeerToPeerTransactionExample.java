@@ -2,29 +2,29 @@ package example;
 
 import com.novi.serde.Bytes;
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
-import org.libra.*;
-import org.libra.jsonrpc.StaleResponseException;
-import org.libra.jsonrpctypes.JsonRpc.Account;
-import org.libra.jsonrpctypes.JsonRpc.Transaction;
-import org.libra.stdlib.Helpers;
-import org.libra.types.RawTransaction;
-import org.libra.types.SignedTransaction;
-import org.libra.types.TransactionPayload;
-import org.libra.utils.CurrencyCode;
+import com.diem.*;
+import com.diem.jsonrpc.StaleResponseException;
+import com.diem.jsonrpc.JsonRpc.Account;
+import com.diem.jsonrpc.JsonRpc.Transaction;
+import com.diem.stdlib.Helpers;
+import com.diem.types.RawTransaction;
+import com.diem.types.SignedTransaction;
+import com.diem.types.TransactionPayload;
+import com.diem.utils.CurrencyCode;
 
 import java.security.SecureRandom;
 
-import static org.libra.Testnet.CHAIN_ID;
+import static com.diem.Testnet.CHAIN_ID;
 
 /**
  * SubmitPeerToPeerTransactionExample demonstrates currencies transfer between 2 accounts on the Libra blockchain
  */
 public class SubmitPeerToPeerTransactionExample {
-    public static final String CURRENCY_CODE = "Coin1";
+    public static final String CURRENCY_CODE = "XUS";
 
-    public static void main(String[] args) throws LibraException {
+    public static void main(String[] args) throws DiemException {
         //connect to testnet
-        LibraClient client = Testnet.createClient();
+        DiemClient client = Testnet.createClient();
 
         //generate private key for sender account
         PrivateKey senderPrivateKey = new Ed25519PrivateKey(new Ed25519PrivateKeyParameters(new SecureRandom()));
