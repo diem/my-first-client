@@ -8,12 +8,11 @@ NL="\n"
 
 gradle shadowJar || exit
 
-printf "${NL}${GREEN}Build Done!${NC} jar could be found at ${PWD}/build/libs${NL}"
+printf "${NL}${GREEN}Build Done!${NC} jar could be found at ${PWD}/build/libs${NL}${NL}"
 
 cd build/libs/
-printf "moved to: ${PWD}${NL}"
 
-printf "${RED}Execute java examples:${NC}${NL}"
+printf "${GREEN}Executing Java examples${NC}${NL}"
 
 printf "${PURPLE}Generate keys example:${NC}${NL}"
 printf "execute: java -cp java-code-examples-1.0-SNAPSHOT-all.jar example.GenerateKeysExample"
