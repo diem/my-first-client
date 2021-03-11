@@ -17,6 +17,6 @@ Requirements for each SDK:
 ## Run examples
 
 ```
-make Java		# for Java
+make java		# for Java
 make python		# for Python
 ```
