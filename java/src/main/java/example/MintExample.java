@@ -20,7 +20,7 @@ public class MintExample {
         //generate private key for new account
         PrivateKey privateKey = new Ed25519PrivateKey(new Ed25519PrivateKeyParameters(new SecureRandom()));
         //generate auth key for new account
-        AuthKey authKey = AuthKey.ed24419(privateKey.publicKey());
+        AuthKey authKey = AuthKey.ed25519(privateKey.publicKey());
         String accountAddress = AccountAddressUtils.hex(authKey.accountAddress());
 
         System.out.println("Generated address: " + accountAddress);

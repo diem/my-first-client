@@ -44,7 +44,7 @@ public class MyFirstClient {
 
         System.out.println("#2 Generate Keys");
         PrivateKey senderPrivateKey = new Ed25519PrivateKey(new Ed25519PrivateKeyParameters(new SecureRandom()));
-        AuthKey senderAuthKey = AuthKey.ed24419(senderPrivateKey.publicKey());
+        AuthKey senderAuthKey = AuthKey.ed25519(senderPrivateKey.publicKey());
 
         System.out.println("#3 Create wallet");
         Testnet.mintCoins(client, 100000000, senderAuthKey.hex(), CURRENCY_CODE);
@@ -63,7 +63,7 @@ public class MyFirstClient {
         //generate private key for new account
         PrivateKey receiverPrivateKey = new Ed25519PrivateKey(new Ed25519PrivateKeyParameters(new SecureRandom()));
         //generate auth key for new account
-        AuthKey receiverAuthKey = AuthKey.ed24419(receiverPrivateKey.publicKey());
+        AuthKey receiverAuthKey = AuthKey.ed25519(receiverPrivateKey.publicKey());
 
         System.out.println("#8 Add funds from mint to the second wallet" + receiverAuthKey.hex());
         Testnet.mintCoins(client, 1000000L, receiverAuthKey.hex(), CURRENCY_CODE);

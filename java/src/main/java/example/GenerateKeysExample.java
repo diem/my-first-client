@@ -19,7 +19,7 @@ public class GenerateKeysExample {
         Ed25519PrivateKey privateKey = new Ed25519PrivateKey(privateKeyParams);
 
         //generate auth key
-        AuthKey authKey = AuthKey.ed24419(privateKey.publicKey());
+        AuthKey authKey = AuthKey.ed25519(privateKey.publicKey());
         String accountAddress = AccountAddressUtils.hex(authKey.accountAddress());
 
         System.out.println("Generated address: " + accountAddress);
