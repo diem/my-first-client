@@ -29,7 +29,7 @@ public class SubmitPeerToPeerTransactionExample {
         //generate private key for sender account
         PrivateKey senderPrivateKey = new Ed25519PrivateKey(new Ed25519PrivateKeyParameters(new SecureRandom()));
         //generate auth key for sender account
-        AuthKey senderAuthKey = AuthKey.ed24419(senderPrivateKey.publicKey());
+        AuthKey senderAuthKey = AuthKey.ed25519(senderPrivateKey.publicKey());
         //create sender account with 100 XUS balance
         Testnet.mintCoins(client, 100000000, senderAuthKey.hex(), CURRENCY_CODE);
 
@@ -39,7 +39,7 @@ public class SubmitPeerToPeerTransactionExample {
         //generate private key for receiver account
         PrivateKey receiverPrivateKey = new Ed25519PrivateKey(new Ed25519PrivateKeyParameters(new SecureRandom()));
         //generate auth key for receiver account
-        AuthKey receiverAuthKey = AuthKey.ed24419(receiverPrivateKey.publicKey());
+        AuthKey receiverAuthKey = AuthKey.ed25519(receiverPrivateKey.publicKey());
         //create receiver account with 1 XUS balance
         Testnet.mintCoins(client, 10000000, receiverAuthKey.hex(), CURRENCY_CODE);
 

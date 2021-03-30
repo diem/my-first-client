@@ -19,7 +19,7 @@ public class GetAccountInfoExample {
         //generate private key for new account
         PrivateKey privateKey = new Ed25519PrivateKey(new Ed25519PrivateKeyParameters(new SecureRandom()));
         //generate auth key for new account
-        AuthKey authKey = AuthKey.ed24419(privateKey.publicKey());
+        AuthKey authKey = AuthKey.ed25519(privateKey.publicKey());
         //create account
         Testnet.mintCoins(client, 1000000000, authKey.hex(), CURRENCY_CODE);
 

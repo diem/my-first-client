@@ -23,7 +23,7 @@ public class GetEventsExample {
         SecureRandom random = new SecureRandom();
         Ed25519PrivateKeyParameters privateKeyParams = new Ed25519PrivateKeyParameters(random);
         Ed25519PrivateKey privateKey = new Ed25519PrivateKey(privateKeyParams);
-        AuthKey authKey = AuthKey.ed24419(privateKey.publicKey());
+        AuthKey authKey = AuthKey.ed25519(privateKey.publicKey());
         Testnet.mintCoins(client, 100000000, authKey.hex(), CURRENCY_CODE);
 
         //get account events key
